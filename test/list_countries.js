@@ -16,6 +16,7 @@ function listCountries(data, cb) {
         cb = data;
     
     session.listCountries({}, function(err,res) {
+        console.log("listCounties err=%s duration=%s", err, res.duration());
         cb(err,res);
     });
 }
