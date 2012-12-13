@@ -15,11 +15,11 @@ exports.login = function(par, cb) {
 
     console.log('===== Logging in to Betfair =====');
     var session = exports.session;
-    session.open(exports.loginName, exports.password, exports.applocationKey, function(err, res) {
+    session.open(exports.loginName, exports.password, exports.applicationKey, function(err, res) {
         if (err) {
             console.log('Login error', err);
         } else {
-            console.log('Login OK');
+            console.log('Login OK',session.v6Session);
         }
         exports.loginCookie = res.responseCookie;
         cb(err);
