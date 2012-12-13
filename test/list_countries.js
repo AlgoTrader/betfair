@@ -16,12 +16,12 @@ function listCountries(data, cb) {
         cb = data;
     
     session.listCountries({}, function(err,res) {
-        console.log("listCounties err=%s duration=%s", err, res.duration());
+        console.log("listCounties err=%s duration=%s", err, res.duration()/1000);
         cb(err,res);
     });
 }
 
-async.waterfall([common.login, listCountries, common.logout], function(err,res) {
+async.waterfall([common.login, listCountries, listCountries, listCountries, common.logout], function(err,res) {
     console.log("Done",err,res);
     process.exit(0);
 });
