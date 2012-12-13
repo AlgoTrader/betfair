@@ -1,0 +1,27 @@
+{
+  "name": "betfair",
+  "version": "0.0.0",
+  "description": "Betfair JSON API",
+  "main": "index.js",
+  "private" : true,
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AlgoTrader/betfair.git"
+  },
+  "keywords": [
+    "betfair",
+    "sports",
+    "json",
+    "new",
+    "api"
+  ],
+  "author": "Anton Zemlyanov",
+  "license": "BSD",
+  "dependencies" : { "betfair-sports-api": "*", "async":"*" }
+}
