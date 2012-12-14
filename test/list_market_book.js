@@ -21,11 +21,26 @@ function listMarketCatalogue(data, cb) {
         console.log("listMarketCatalogue err=%s duration=%s", err, res.duration()/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
-        cb(err,res);
+        data.selectedMarket = res.response.result[0];
+        cb(err,data);
     });
 }
 
-async.waterfall([common.login, listMarketCatalogue, common.logout], function(err,res) {
+function listMarketBook(data, cb) {
+    if(!cb) 
+        cb = data;
+
+    //var price = ['EX_ALL_OFFERS'];
+    var price = ['EX_ALL_OFFERS', 'EX_TRADED'];
+    session.listMarketBook({marketIds:[data.selectedMarket.marketId], priceProjection:price}, function(err,res) {
+        console.log("listMarketBook err=%s duration=%s", err, res.duration()/1000);
+        console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
+        console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
+        cb(err,data);
+    });
+}
+
+async.waterfall([common.login, listMarketCatalogue, listMarketBook, common.logout], function(err,res) {
     console.log("Done, err =",err);
     process.exit(0);
 });

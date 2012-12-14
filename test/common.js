@@ -22,7 +22,7 @@ exports.login = function(par, cb) {
             console.log('Login OK, %s secs', res.duration()/1000);
         }
         exports.loginCookie = res.responseCookie;
-        cb(err);
+        cb(err, {});
     });
 }
 
@@ -40,7 +40,7 @@ exports.logout = function(par, cb) {
         } else {
             console.log('Logout OK, %s secs', res.duration()/1000);
         }
-        cb(err);
+        cb(err, {});
     });
 }
 
