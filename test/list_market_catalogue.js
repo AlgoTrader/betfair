@@ -10,19 +10,20 @@ common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 common.applicationKey = process.env['BF_APPLICATION_KEY'] || "invalid";
 
-// list countries
-function listCountries(data, cb) {
+// list market catalogue
+function listMarketCatalogue(data, cb) {
     if(!cb) 
         cb = data;
     
-    session.listCountries({}, function(err,res) {
-        console.log("listCounties err=%s duration=%s", err, res.duration()/1000);
+    session.listMarketCatalogue({}, function(err,res) {
+        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration()/1000);
+        console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,res);
     });
 }
 
-async.waterfall([common.login, listCountries, common.logout], function(err,res) {
+async.waterfall([common.login, listMarketCatalogue, common.logout], function(err,res) {
     console.log("Done, err =",err);
     process.exit(0);
 });

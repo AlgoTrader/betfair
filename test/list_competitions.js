@@ -11,18 +11,18 @@ common.password = process.env['BF_PASSWORD'] || "password";
 common.applicationKey = process.env['BF_APPLICATION_KEY'] || "invalid";
 
 // list countries
-function listCountries(data, cb) {
+function listCompetitions(data, cb) {
     if(!cb) 
         cb = data;
     
-    session.listCountries({}, function(err,res) {
-        console.log("listCounties err=%s duration=%s", err, res.duration()/1000);
+    session.listCompetitions({}, function(err,res) {
+        console.log("listCompetitions err=%s duration=%s", err, res.duration()/1000);
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,res);
     });
 }
 
-async.waterfall([common.login, listCountries, common.logout], function(err,res) {
-    console.log("Done, err =",err);
+async.waterfall([common.login, listCompetitions, common.logout], function(err,res) {
+    console.log("Done err =",err);
     process.exit(0);
 });
