@@ -4,11 +4,10 @@ var async = require('async');
 var common = require('./common.js');
 
 // Create session to Betfair
-var session = betfair.newSession();
-common.session = session;
+var appKey = process.env['BF_APPLICATION_KEY']|| "invalid";
+var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
-common.applicationKey = process.env['BF_APPLICATION_KEY'] || "invalid";
 
 // list
 function listMarketTypes(data, cb) {

@@ -5,7 +5,6 @@ var util = require('util');
 exports.session = null;
 exports.loginName = null;
 exports.password = null;
-exports.applicationKey = null;
 
 // login to Betfair
 exports.login = function(par, cb) {
@@ -15,7 +14,7 @@ exports.login = function(par, cb) {
 
     console.log('===== Logging in to Betfair =====');
     var session = exports.session;
-    session.open(exports.loginName, exports.password, exports.applicationKey, function(err, res) {
+    session.login(exports.loginName, exports.password, function(err, res) {
         if (err) {
             console.log('Login error', err);
         } else {
@@ -34,7 +33,7 @@ exports.logout = function(par, cb) {
     
     console.log('===== Logging out... =====');
     var session = exports.session;
-    session.close(function(err, res) {
+    session.logout(function(err, res) {
         if (err) {
             console.log('Logout error', err);
         } else {
