@@ -17,6 +17,7 @@ function listEvents(data, cb) {
     
     session.listEvents({}, function(err,res) {
         console.log("listEvents err=%s duration=%s", err, res.duration()/1000);
+        console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,res);
     });
