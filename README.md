@@ -1,7 +1,7 @@
 Betfair Next Generation JSON-RPC API for Node.js
 ================================================
 
-**Important Notice**. *This library utilize the beta version of the Betfair next generation JSON API. 
+**Important Notice**. *This library utilizes the beta version of the Betfair next generation JSON API. 
 To access the API you need to request an Application Key from the Betfair*. 
 
 ## Installation ##
