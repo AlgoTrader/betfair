@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Betfair JSON API",
   "main": "index.js",
-  "private" : true,
+  "private" : false,
   "directories": {
     "test": "test"
   },
@@ -21,7 +21,7 @@
     "new",
     "api"
   ],
-  "author": "Anton Zemlyanov",
+  "author": "AlgoTrader",
   "license": "BSD",
   "dependencies" : { "betfair-sports-api": "*", "async":"*" }
 }
