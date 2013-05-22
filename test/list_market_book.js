@@ -9,23 +9,6 @@ var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
-// list market catalogue
-function listMarketCatalogue(data, cb) {
-    if(!cb) 
-        cb = data;
-                
-    var filter = { eventTypeIds: [2], marketTypeCodes:['MATCH_ODDS']};
-    var what = ['EVENT', 'RUNNER_DESCRIPTION'];
-    session.listMarketCatalogue({filter:filter, marketProjection:what, maxResults:60}, function(err,res) {
-        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration/1000);
-        console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
-        console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
-        data.selectedMarket = res.response.result[0];
-        data.selectedMarket2 = res.response.result[1];
-        cb(err,data);
-    });
-}
-
 function listMarketBook(data, cb) {
     if(!cb) 
         cb = data;
@@ -34,8 +17,12 @@ function listMarketBook(data, cb) {
     var price = ['EX_ALL_OFFERS', 'EX_TRADED'];
     var order = 'ALL';
     var match = 'NO_ROLLUP';
-    //session.listMarketBook({marketIds:[data.selectedMarket.marketId,data.selectedMarket2.marketId], priceProjection:price, orderProjection:order, matchProjection:match}, function(err,res) {
-    session.listMarketBook({marketIds:[data.selectedMarket.marketId,data.selectedMarket2.marketId], matchProjection:match}, function(err,res) {
+    var req = {
+        marketIds:[data.selectedMarket.marketId],
+        matchProjection: 'NO_ROLLUP',
+        priceProjection: {priceData: ['EX_ALL_OFFERS', 'EX_TRADED']}
+    };
+    session.listMarketBook(req, function(err,res) {
         console.log("listMarketBook err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
@@ -43,7 +30,8 @@ function listMarketBook(data, cb) {
     });
 }
 
-async.waterfall([common.login, listMarketCatalogue, listMarketBook, common.logout], function(err,res) {
+async.waterfall([common.login, common.listMarketCatalogue, common.selectMarket, 
+    listMarketBook, common.logout], function(err,res) {
     console.log("Done, err =",err);
     process.exit(0);
 });
