@@ -43,3 +43,39 @@ exports.logout = function(par, cb) {
     });
 }
 
+// list market catalogue
+exports.listMarketCatalogue = function(par, cb) {
+    if(!cb) {
+        cb = par;
+    }
+    
+    // Tennis, MATCH ODDS
+    console.log('===== calling listMarketCatalogue... =====');
+    var session = exports.session;
+    var filter = { eventTypeIds: [2], marketTypeCodes:['MATCH_ODDS']};
+    var what = ['EVENT', 'EVENT_TYPE', 'COMPETITION', 'MARKET_START_TIME', 'RUNNER_DESCRIPTION'];
+    session.listMarketCatalogue({filter:filter, marketProjection:what, maxResults:1000}, function(err,res) {
+        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration/1000);
+        console.log("There are %d markets", res.response.result.length);
+        //console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
+        //console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
+        par.markets = res.response.result;
+        cb(err, par);
+    });
+}
+
+// select the most far market from the markets array
+exports.selectMarket = function(par, cb) {
+    if(!cb) {
+        cb = par;
+    }
+    
+    console.log('===== select the market... =====');
+    if(par.markets.length<1) {
+        throw new Error('No markets to test');
+    }
+    par.selectedMarket = par.markets[par.markets.length-1];
+    console.log('Selected Market marketId="%s", name="%s"', 
+        par.selectedMarket.marketId, par.selectedMarket.event.name);
+    cb(null, par);
+}

@@ -9,8 +9,6 @@ var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
-console.log(common.loginName);
-
 async.waterfall([common.login, common.logout], function(err,res) {
     console.log("Done");
     process.exit(0);

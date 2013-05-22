@@ -15,7 +15,7 @@ function listVenues(data, cb) {
         cb = data;
     
     session.listVenues({}, function(err,res) {
-        console.log("listCounties err=%s duration=%s", err, res.duration()/1000);
+        console.log("listVenues err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,res);

@@ -15,7 +15,7 @@ function listTimeRanges(data, cb) {
         cb = data;
     
     session.listTimeRanges({granularity:"HOURS"}, function(err,res) {
-        console.log("listTimeRanges err=%s duration=%s", err, res.duration()/1000);
+        console.log("listTimeRanges err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,res);

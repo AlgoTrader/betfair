@@ -14,10 +14,10 @@ function listMarketCatalogue(data, cb) {
     if(!cb) 
         cb = data;
                 
-    var filter = { eventTypeIds: [1], marketTypeCodes:['MATCH_ODDS']};
-    var what = ['EVENT', 'RUNNER_DESCRIPTION'];
-    session.listMarketCatalogue({filter:filter, marketProjection:what, maxResults:60}, function(err,res) {
-        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration()/1000);
+    var filter = { eventTypeIds: [2], marketTypeCodes:['MATCH_ODDS']};
+    var what = ['EVENT', 'EVENT_TYPE', 'COMPETITION', 'MARKET_START_TIME'];
+    session.listMarketCatalogue({filter:filter, marketProjection:what, maxResults:1000}, function(err,res) {
+        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,res);

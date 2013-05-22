@@ -17,7 +17,7 @@ function listMarketCatalogue(data, cb) {
     var filter = { eventTypeIds: [2], marketTypeCodes:['MATCH_ODDS']};
     var what = ['EVENT', 'RUNNER_DESCRIPTION'];
     session.listMarketCatalogue({filter:filter, marketProjection:what, maxResults:60}, function(err,res) {
-        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration()/1000);
+        console.log("listMarketCatalogue err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         data.selectedMarket = res.response.result[0];
@@ -36,7 +36,7 @@ function listMarketBook(data, cb) {
     var match = 'NO_ROLLUP';
     //session.listMarketBook({marketIds:[data.selectedMarket.marketId,data.selectedMarket2.marketId], priceProjection:price, orderProjection:order, matchProjection:match}, function(err,res) {
     session.listMarketBook({marketIds:[data.selectedMarket.marketId,data.selectedMarket2.marketId], matchProjection:match}, function(err,res) {
-        console.log("listMarketBook err=%s duration=%s", err, res.duration()/1000);
+        console.log("listMarketBook err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err,data);
