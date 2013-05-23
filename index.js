@@ -1,14 +1,20 @@
-// (C) 2012 Anton Zemlyanov
+// (C) 2013 Anton Zemlyanov
 //
 // Betfair Sports API for node
 // see Sports API documentation on http://bdp.betfair.com
 //
-// Exported properties:
-//   newSession  - create Betfair Session
 
-var betfairSession = require('./lib/betfair_session');
-exports.newSession  = betfairSession.newSession;
+// Export BetfairSession 
+// Used to invoke Betfair JSON-RPC methods
+var BetfairSession = require('./lib/betfair_session');
+exports.newSession  = function(appKey) {
+    return new BetfairSession(appKey);
+};
 
-var betfairPrice = require('./lib/betfair_price');
-exports.newBetfairPrice = betfairPrice.newBetfairPrice;
+// Export BetfairPrice
+// Used to "normalize" prices to Betfair allowed values
+var BetfairPrice = require('./lib/betfair_price');
+exports.newBetfairPrice = function(price) {
+    return new BetfairPrice(price);
+}
 
