@@ -170,6 +170,7 @@ function cancelOrdersFull(data, cb) {
 
 var actions = [common.login, common.listMarketCatalogue, common.selectMarket, enableEmulator,
     placeOrders, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
+    
 async.waterfall(actions, function(err,res) {
     console.log("Done, err =",err);
     process.exit(0);
