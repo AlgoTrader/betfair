@@ -14,9 +14,6 @@ function listMarketBook(data, cb) {
         cb = data;
 
     //var price = ['EX_ALL_OFFERS'];
-    var price = ['EX_ALL_OFFERS', 'EX_TRADED'];
-    var order = 'ALL';
-    var match = 'NO_ROLLUP';
     var req = {
         marketIds:[data.selectedMarket.marketId],
         matchProjection: 'NO_ROLLUP',
