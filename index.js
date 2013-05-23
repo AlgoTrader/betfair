@@ -17,4 +17,3 @@ var BetfairPrice = require('./lib/betfair_price');
 exports.newBetfairPrice = function(price) {
     return new BetfairPrice(price);
 }
-
