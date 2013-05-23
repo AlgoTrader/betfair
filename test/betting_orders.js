@@ -30,7 +30,7 @@ function placeOrders(data, cb) {
     var bets = [
         {
             orderType: 'LIMIT',
-            selectionId: market.runners[0].selectionId,
+            selectionId: market.runners[0].selectionId*2,
             side: 'LAY',
             limitOrder: {
                 price: 1.01,
@@ -40,7 +40,7 @@ function placeOrders(data, cb) {
         },
         {
             orderType: 'LIMIT',
-            selectionId: market.runners[0].selectionId,
+            selectionId: market.runners[0].selectionId*2,
             side: 'BACK',
             limitOrder: {
                 price: 1000,
@@ -49,7 +49,8 @@ function placeOrders(data, cb) {
             }
         }
     ];
-    var ref = (new Date()).toISOString();
+    //var ref = (new Date()).toISOString();
+    var ref = "REF";
     session.placeOrders({marketId:market.marketId, instructions:bets, customerRef:ref}, function(err,res) {
         console.log("placeOrders err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
@@ -169,7 +170,7 @@ function cancelOrdersFull(data, cb) {
 }
 
 var actions = [common.login, common.listMarketCatalogue, common.selectMarket, enableEmulator,
-    placeOrders, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
+    placeOrders, placeOrders, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
     
 async.waterfall(actions, function(err,res) {
     console.log("Done, err =",err);
