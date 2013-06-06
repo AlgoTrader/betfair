@@ -9,6 +9,10 @@ var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
+// log all Betfair invocations
+session.startInvocationLog('invocation.log');
+
+
 // list countries
 function getDeveloperAppKeys(data, cb) {
     if(!cb) 

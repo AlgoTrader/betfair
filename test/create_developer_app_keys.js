@@ -9,12 +9,16 @@ var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
+// log all Betfair invocations
+session.startInvocationLog('invocation.log');
+
+
 // list countries
 function createDeveloperAppKeys(data, cb) {
     if(!cb) 
         cb = data;
     
-    session.createDeveloperAppKeys({appName:"ApiNgTestApplication"}, function(err,res) {
+    session.createDeveloperAppKeys({appName:"ApiNgTestApplication2"}, function(err,res) {
         console.log("createDeveloperAppKeys err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));

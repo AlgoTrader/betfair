@@ -9,12 +9,15 @@ var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
+// log all Betfair invocations
+session.startInvocationLog('invocation.log');
+
 // list
 function listMarketTypes(data, cb) {
     if(!cb) 
         cb = data;
     
-    session.listEventTypes({}, function(err,res) {
+    session.listMarketTypes({}, function(err,res) {
         console.log("listMarketTypes err=%s duration=%s", err, res.duration/1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));

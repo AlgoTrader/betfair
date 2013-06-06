@@ -1,6 +1,6 @@
 {
   "name": "betfair",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Betfair JSON API",
   "main": "index.js",
   "private" : false,
@@ -23,5 +23,10 @@
   ],
   "author": "AlgoTrader",
   "license": "BSD",
-  "dependencies" : { "betfair-sports-api": "*", "async":"*", "node-uuid":"*" }
+  "dependencies" : { 
+    "betfair-sports-api": "*", 
+    "async":"*", 
+    "node-uuid":"*", 
+    "bunyan":"*" 
+  }
 }

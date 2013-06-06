@@ -9,6 +9,9 @@ var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
+// log all Betfair invocations
+session.startInvocationLog('invocation.log');
+
 // list
 function listVenues(data, cb) {
     if(!cb) 
