@@ -12,18 +12,6 @@ common.password = process.env['BF_PASSWORD'] || "password";
 // log all Betfair invocations
 session.startInvocationLog('invocation.log');
 
-// Optional step to test emulator
-function enableEmulator(data, cb) {
-    if(!cb) {
-        cb = data;
-    }
-    
-    var mId = data.selectedMarket.marketId;
-    console.log('===== Enable emulator for marketId=%s... =====', mId);
-    //session.enableBetEmulatorForMarket(mId);
-    cb(null, data);
-}
-
 function placeOrders(data, cb) {
     if(!cb) {
         cb = data;
@@ -172,7 +160,7 @@ function cancelOrdersFull(data, cb) {
     });
 }
 
-var actions = [common.login, common.listMarketCatalogue, common.selectMarket, enableEmulator,
+var actions = [common.login, common.listMarketCatalogue, common.selectMarket,
     placeOrders, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
     
 async.waterfall(actions, function(err,res) {
