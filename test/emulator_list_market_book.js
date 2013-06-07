@@ -11,7 +11,7 @@ common.password = process.env['BF_PASSWORD'] || "password";
 
 // log all Betfair invocations
 session.startInvocationLog('invocation.log');
-session.startEmulatorLog('emulator.log');
+session.startEmulatorLog('emulator.log', 'debug');
 
 // Optional step to test emulator
 function enableEmulator(data, cb) {
