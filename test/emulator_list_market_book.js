@@ -10,8 +10,8 @@ common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
 // log all Betfair invocations
-session.startInvocationLog('invocation.log');
-session.startEmulatorLog('emulator.log', 'debug');
+session.startInvocationLog('log_invocations.txt');
+session.startEmulatorLog('log_emulator.txt', 'debug');
 
 // Optional step to test emulator
 function enableEmulator(data, cb) {
