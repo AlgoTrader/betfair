@@ -10,7 +10,7 @@ common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
 // log all Betfair invocations
-session.startInvocationLog('log_invocations.txt');
+session.startInvocationLog({level:'info', path:'log_invocations.txt'});
 
 function listMarketBook(data, cb) {
     if(!cb) 
