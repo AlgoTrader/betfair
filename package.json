@@ -27,6 +27,8 @@
     "betfair-sports-api": "*", 
     "async":"*", 
     "node-uuid":"*", 
+    "querystring":"*",
+    "cookie":"*",
     "bunyan":"*" 
   }
 }
