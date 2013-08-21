@@ -18,4 +18,3 @@ exports.newBetfairPrice = function(price) {
     return new BetfairPrice(price);
 }
 
-//test
