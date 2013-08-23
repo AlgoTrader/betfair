@@ -24,8 +24,7 @@
   "author": "AlgoTrader",
   "license": "BSD",
   "dependencies" : { 
-    "betfair-sports-api": "*", 
-    "async":"*", 
+    "async":"*",
     "node-uuid":"*", 
     "querystring":"*",
     "cookie":"*",
