@@ -11,6 +11,8 @@ exports.login = function(par, cb) {
     if(!cb)
         // cb is first parameter
         cb = par; 
+    //cb(null, {});
+    //return;
 
     console.log('===== Logging in to Betfair =====');
     var session = exports.session;
@@ -18,9 +20,9 @@ exports.login = function(par, cb) {
         if (err) {
             console.log('Login error', err);
         } else {
-            console.log('Login OK, %s secs', res.duration()/1000);
+            console.log('Login OK, %s secs', res.duration/1000);
         }
-        exports.loginCookie = res.responseCookie;
+        //exports.loginCookie = res.responseCookie;
         cb(err, {});
     });
 }
@@ -37,7 +39,7 @@ exports.logout = function(par, cb) {
         if (err) {
             console.log('Logout error', err);
         } else {
-            console.log('Logout OK, %s secs', res.duration()/1000);
+            console.log('Logout OK, %s secs', res.duration/1000);
         }
         cb(err, {});
     });
