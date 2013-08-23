@@ -1,40 +1,38 @@
 // This module contains functions shared by multiple tests
 var util = require('util');
+var fs = require('fs');
 
 // session to use for all the invocations, should be set by test
-exports.session = null;
-exports.loginName = null;
-exports.password = null;
+var settings = exports.settings = {};
+
+settings.sslOptions = {};
+var key = fs.existsSync("client-2048.key") && fs.readFileSync("client-2048.key");
+var cert = fs.existsSync("client-2048.crt") && fs.readFileSync("client-2048.crt");
+if (key && cert) {
+    settings.isBotLogin = true;
+    settings.sslOptions = { key: key, cert: cert};
+}
+//console.log(settings);
 
 // login to Betfair
-exports.login = function (par, cb) {
-    if (!cb)
-    // cb is first parameter
-        cb = par;
-    //cb(null, {});
-    //return;
-
-    console.log('===== Logging in to Betfair =====');
-    var session = exports.session;
-    session.login(exports.loginName, exports.password, function (err, res) {
+exports.login = function (cb) {
+    console.log('===== Logging in to Betfair (' + (settings.isBotLogin ? 'bot' : 'interactive') + ') =====');
+    var session = settings.session;
+    session.login(settings.login, settings.password, settings.sslOptions, function (err, res) {
         if (err) {
             console.log('Login error', err);
         } else {
             console.log('Login OK, %s secs', res.duration / 1000);
         }
         //exports.loginCookie = res.responseCookie;
-        cb(err, {});
+        cb(err);
     });
 }
 
 // logout from Betfair
-exports.logout = function (par, cb) {
-    if (!cb)
-    // cb is first parameter
-        cb = par;
-
+exports.logout = function (cb) {
     console.log('===== Logging out... =====');
-    var session = exports.session;
+    var session = settings.session;
     session.logout(function (err, res) {
         if (err) {
             console.log('Logout error', err);
@@ -46,14 +44,10 @@ exports.logout = function (par, cb) {
 }
 
 // list market catalogue
-exports.listMarketCatalogue = function (par, cb) {
-    if (!cb) {
-        cb = par;
-    }
-
+exports.listMarketCatalogue = function (cb) {
     // Tennis, MATCH ODDS
     console.log('===== calling listMarketCatalogue... =====');
-    var session = exports.session;
+    var session = settings.session;
     var filter = { eventTypeIds: [2], marketTypeCodes: ['MATCH_ODDS']};
     var what = ['EVENT', 'EVENT_TYPE', 'COMPETITION', 'MARKET_START_TIME', 'RUNNER_DESCRIPTION'];
     session.listMarketCatalogue({filter: filter, marketProjection: what, maxResults: 1000}, function (err, res) {
@@ -67,11 +61,7 @@ exports.listMarketCatalogue = function (par, cb) {
 }
 
 // select the most far market from the markets array
-exports.selectMarket = function (par, cb) {
-    if (!cb) {
-        cb = par;
-    }
-
+exports.selectMarket = function (cb) {
     console.log('===== select the market... =====');
     if (par.markets.length < 1) {
         throw new Error('No markets to test');
