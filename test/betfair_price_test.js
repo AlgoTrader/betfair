@@ -40,9 +40,9 @@ console.log('Spread 2.0 to 1000 is %s', price.spreadToPrice(1000));
 console.log("Test accending prices:")
 var cnt = 0;
 var price = newBetfairPrice(1.01);
-while(true) {
-    console.log('index:%s price:%s',cnt,price.toString());
-    if(price.toString()==='1000.0')
+while (true) {
+    console.log('index:%s price:%s', cnt, price.toString());
+    if (price.toString() === '1000.0')
         break;
     price.increasePrice();
     ++cnt;
@@ -51,9 +51,9 @@ while(true) {
 console.log("Test decending prices:")
 var cnt = 0;
 var price = newBetfairPrice(1000.0);
-while(true) {
-    console.log('index:%s price:%s',cnt,price.toString());
-    if(price.toString()==='1.01')
+while (true) {
+    console.log('index:%s price:%s', cnt, price.toString());
+    if (price.toString() === '1.01')
         break;
     price.decreasePrice();
     ++cnt;

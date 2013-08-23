@@ -4,16 +4,16 @@ var async = require('async');
 var common = require('./common.js');
 
 // Create session to Betfair
-var appKey = process.env['BF_APPLICATION_KEY']|| "invalid";
+var appKey = process.env['BF_APPLICATION_KEY'] || "invalid";
 var session = common.session = betfair.newSession(appKey);
 common.loginName = process.env['BF_LOGIN'] || "nobody";
 common.password = process.env['BF_PASSWORD'] || "password";
 
 // log all Betfair invocations
-session.startInvocationLog({level:'info', path:'log_invocations.txt'});
+session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
 
 function placeOrders(data, cb) {
-    if(!cb) {
+    if (!cb) {
         cb = data;
     }
     console.log('===== Invoke placeOrders... =====');
@@ -42,21 +42,23 @@ function placeOrders(data, cb) {
     ];
     var ref = (new Date()).toISOString();
     //var ref = "REF";
-    session.placeOrders({marketId:market.marketId, instructions:bets, customerRef:ref}, function(err,res) {
-        console.log("placeOrders err=%s duration=%s", err, res.duration/1000);
+    session.placeOrders({marketId: market.marketId, instructions: bets, customerRef: ref}, function (err, res) {
+        console.log("placeOrders err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         var result = res.response.result;
-        data.betIds = result.instructionReports.map( function(i) { return i.betId; });
-        cb(err,data);
+        data.betIds = result.instructionReports.map(function (i) {
+            return i.betId;
+        });
+        cb(err, data);
     });
 }
 
 function replaceOrders(data, cb) {
-    if(!cb) {
+    if (!cb) {
         cb = data;
     }
-    
+
     console.log('===== Invoke replaceOrders... =====');
     var market = data.selectedMarket;
     var bets = [
@@ -70,22 +72,24 @@ function replaceOrders(data, cb) {
         }
     ];
     var ref = (new Date()).toISOString();
-    session.replaceOrders({marketId:market.marketId, instructions:bets, customerRef:ref}, function(err,res) {
-        console.log("replaceOrders err=%s duration=%s", err, res.duration/1000);
+    session.replaceOrders({marketId: market.marketId, instructions: bets, customerRef: ref}, function (err, res) {
+        console.log("replaceOrders err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         var result = res.response.result;
-        data.betIds = result.instructionReports.map( function(i) { return i.placeInstructionReport.betId; });
+        data.betIds = result.instructionReports.map(function (i) {
+            return i.placeInstructionReport.betId;
+        });
         console.log(data.betIds);
-        cb(err,data);
+        cb(err, data);
     });
 }
 
 function updateOrders(data, cb) {
-    if(!cb) {
+    if (!cb) {
         cb = data;
     }
-    
+
     console.log('===== Invoke updateOrders... =====');
     var market = data.selectedMarket;
     var bets = [
@@ -99,20 +103,20 @@ function updateOrders(data, cb) {
         }
     ];
     var ref = (new Date()).toISOString();
-    session.updateOrders({marketId:market.marketId, instructions:bets, customerRef:ref}, function(err,res) {
-        console.log("updateOrders err=%s duration=%s", err, res.duration/1000);
+    session.updateOrders({marketId: market.marketId, instructions: bets, customerRef: ref}, function (err, res) {
+        console.log("updateOrders err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         var result = res.response.result;
-        cb(err,data);
+        cb(err, data);
     });
 }
 
 function cancelOrdersPartial(data, cb) {
-    if(!cb) {
+    if (!cb) {
         cb = data;
     }
-    
+
     console.log('===== Invoke cancelOrders... (PARTIAL CANCEL) =====');
     var market = data.selectedMarket;
     var bets = [
@@ -126,20 +130,20 @@ function cancelOrdersPartial(data, cb) {
         }
     ];
     var ref = (new Date()).toISOString();
-    session.cancelOrders({marketId:market.marketId, instructions:bets, customerRef:ref}, function(err,res) {
-        console.log("cancelOrders err=%s duration=%s", err, res.duration/1000);
+    session.cancelOrders({marketId: market.marketId, instructions: bets, customerRef: ref}, function (err, res) {
+        console.log("cancelOrders err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         var result = res.response.result;
-        cb(err,data);
+        cb(err, data);
     });
 }
 
 function cancelOrdersFull(data, cb) {
-    if(!cb) {
+    if (!cb) {
         cb = data;
     }
-    
+
     console.log('===== Invoke cancelOrders... (FULL CANCEL) =====');
     var market = data.selectedMarket;
     var bets = [
@@ -151,19 +155,19 @@ function cancelOrdersFull(data, cb) {
         }
     ];
     var ref = (new Date()).toISOString();
-    session.cancelOrders({marketId:market.marketId, instructions:bets, customerRef:ref}, function(err,res) {
-        console.log("cancelOrders err=%s duration=%s", err, res.duration/1000);
+    session.cancelOrders({marketId: market.marketId, instructions: bets, customerRef: ref}, function (err, res) {
+        console.log("cancelOrders err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         var result = res.response.result;
-        cb(err,data);
+        cb(err, data);
     });
 }
 
 var actions = [common.login, common.listMarketCatalogue, common.selectMarket,
     placeOrders, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
-    
-async.waterfall(actions, function(err,res) {
-    console.log("Done, err =",err);
+
+async.waterfall(actions, function (err, res) {
+    console.log("Done, err =", err);
     process.exit(0);
 });
