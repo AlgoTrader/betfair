@@ -21,11 +21,12 @@ exports.login = function (cb) {
     session.login(settings.login, settings.password, settings.sslOptions, function (err, res) {
         if (err) {
             console.log('Login error', err);
-        } else {
-            console.log('Login OK, %s secs', res.duration / 1000);
+			cb(err);
+			return;
         }
-        //exports.loginCookie = res.responseCookie;
-        cb(err);
+
+        console.log('Login OK, %s secs', res.duration / 1000);
+        cb(null);
     });
 }
 
@@ -36,13 +37,40 @@ exports.logout = function (cb) {
     session.logout(function (err, res) {
         if (err) {
             console.log('Logout error', err);
-        } else {
-            console.log('Logout OK, %s secs', res.duration / 1000);
+			cb(err);
+			return;
         }
-        cb(err, {});
+
+        console.log('Logout OK, %s secs', res.duration / 1000);
+        cb(null);
     });
 }
 
+// getDeveloperAppKeys
+exports.getDeveloperAppKeys = function (cb) {
+	console.log('===== Getting Application Keys... =====');
+	var session = settings.session;
+	session.getDeveloperAppKeys({}, function (err, res) {
+		if (err) {
+			console.log('Failed to get a key', err);
+			cb(err);
+			return;
+		}
+		console.log(util.inspect(res.response, {depth:10}));
+		var keys = {};
+		var app = res.response.result[0];
+		for(var cnt=0; cnt<app.appVersions.length; ++cnt) {
+			var version = app.appVersions[cnt];
+			if(version.delayData) {
+				keys.delayed = version.applicationKey;
+			} else {
+				keys.active = version.applicationKey;
+			}
+		}
+		session.setApplicationKeys(keys);
+		cb(null);
+	});
+}
 // list market catalogue
 exports.listMarketCatalogue = function (cb) {
     // Tennis, MATCH ODDS
