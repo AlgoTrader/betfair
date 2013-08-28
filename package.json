@@ -1,6 +1,6 @@
 {
   "name": "betfair",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Betfair JSON API",
   "main": "index.js",
   "private" : false,
@@ -29,5 +29,6 @@
     "querystring":"*",
     "cookie":"*",
     "bunyan":"*" 
-  }
+  },
+  "optional": false
 }
