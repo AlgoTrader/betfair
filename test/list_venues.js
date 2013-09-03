@@ -23,7 +23,7 @@ function listVenues(cb) {
 	});
 }
 
-async.series([common.login, common.getDeveloperAppKeys , listVenues, common.logout, common.logout], function (err, res) {
+async.series([common.login, common.getDeveloperAppKeys , listVenues, common.logout], function (err, res) {
 	console.log("Done, err =", err);
 	process.exit(0);
 });
