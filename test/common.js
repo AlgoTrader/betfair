@@ -18,7 +18,8 @@ if (key && cert) {
 exports.login = function (cb) {
     console.log('===== Logging in to Betfair (' + (settings.isBotLogin ? 'bot' : 'interactive') + ') =====');
     var session = settings.session;
-    session.login(settings.login, settings.password, settings.sslOptions, function (err, res) {
+	session.setSslOptions(settings.sslOptions);
+    session.login(settings.login, settings.password, function (err, res) {
         if (err) {
             console.log('Login error', err);
 			cb(err);
