@@ -46,6 +46,22 @@ exports.logout = function (cb) {
     });
 }
 
+// keepAlive
+exports.keepAlive = function (cb) {
+	console.log('===== Sending keepAlive ... =====');
+	var session = settings.session;
+	session.keepAlive(function (err, res) {
+		if (err) {
+			console.log('KeepAlive error', err);
+			cb(err);
+			return;
+		}
+
+		console.log('keepAlive OK, %s secs', res.duration / 1000);
+		cb(null);
+	});
+}
+
 // getDeveloperAppKeys
 exports.getDeveloperAppKeys = function (cb) {
 	console.log('===== Getting Application Keys... =====');
