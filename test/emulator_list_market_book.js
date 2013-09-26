@@ -4,13 +4,16 @@ var async = require('async');
 var common = require('./common.js');
 
 // Create session to Betfair
-var appKey = process.env['BF_APPLICATION_KEY'] || "invalid";
-var session = common.session = betfair.newSession(appKey);
-common.loginName = process.env['BF_LOGIN'] || "nobody";
-common.password = process.env['BF_PASSWORD'] || "password";
+var settings = common.settings;
+settings.session = betfair.newSession();
+settings.login = process.env['BF_LOGIN'] || "nobody";
+settings.password = process.env['BF_PASSWORD'] || "password";
 
 // log all Betfair invocations
+var session = settings.session;
 session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
+
+// Emulator log
 session.startEmulatorLog({level: 'info', path: 'log_emulator.txt'});
 
 // Optional step to test emulator

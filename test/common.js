@@ -16,7 +16,9 @@ if (key && cert) {
 
 // login to Betfair
 exports.login = function (cb) {
-    console.log('===== Logging in to Betfair (' + (settings.isBotLogin ? 'bot' : 'interactive') + ') =====');
+	cb = cb || function() {};
+
+	console.log('===== Logging in to Betfair (' + (settings.isBotLogin ? 'bot' : 'interactive') + ') =====');
     var session = settings.session;
 	session.setSslOptions(settings.sslOptions);
     session.login(settings.login, settings.password, function (err, res) {
@@ -33,6 +35,8 @@ exports.login = function (cb) {
 
 // logout from Betfair
 exports.logout = function (cb) {
+	cb = cb || function() {};
+
     console.log('===== Logging out... =====');
     var session = settings.session;
     session.logout(function (err, res) {
@@ -49,6 +53,8 @@ exports.logout = function (cb) {
 
 // keepAlive
 exports.keepAlive = function (cb) {
+	cb = cb || function() {};
+
 	console.log('===== Sending keepAlive ... =====');
 	var session = settings.session;
 	session.keepAlive(function (err, res) {
@@ -65,6 +71,8 @@ exports.keepAlive = function (cb) {
 
 // getDeveloperAppKeys
 exports.getDeveloperAppKeys = function (cb) {
+	cb = cb || function() {};
+
 	console.log('===== Getting Application Keys... =====');
 	var session = settings.session;
 	session.getDeveloperAppKeys({}, function (err, res) {
@@ -73,7 +81,7 @@ exports.getDeveloperAppKeys = function (cb) {
 			cb(err);
 			return;
 		}
-		console.log(util.inspect(res.response, {depth:10}));
+		//console.log(util.inspect(res.response, {depth:10}));
 		var keys = {};
 		var app = res.response.result[0];
 		for(var cnt=0; cnt<app.appVersions.length; ++cnt) {
@@ -97,22 +105,24 @@ exports.listMarketCatalogue = function (cb) {
     var what = ['EVENT', 'EVENT_TYPE', 'COMPETITION', 'MARKET_START_TIME', 'RUNNER_DESCRIPTION'];
     session.listMarketCatalogue({filter: filter, marketProjection: what, maxResults: 1000}, function (err, res) {
         console.log("listMarketCatalogue err=%s duration=%s", err, res.duration / 1000);
+		console.log(util.inspect(res.response, {depth:10}));
         console.log("There are %d markets", res.response.result.length);
         //console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         //console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
-        par.markets = res.response.result;
-        cb(err, par);
+		settings.markets = res.response.result;
+        cb(err);
     });
 }
 
 // select the most far market from the markets array
 exports.selectMarket = function (cb) {
     console.log('===== select the market... =====');
-    if (par.markets.length < 1) {
+	var session = settings.session;
+    if (settings.markets.length < 1) {
         throw new Error('No markets to test');
     }
-    par.selectedMarket = par.markets[par.markets.length - 1];
+	settings.selectedMarket = settings.markets[settings.markets.length - 1];
     console.log('Selected Market marketId="%s", name="%s"',
-        par.selectedMarket.marketId, par.selectedMarket.event.name);
-    cb(null, par);
+		settings.selectedMarket.marketId, settings.selectedMarket.event.name);
+    cb(null);
 }

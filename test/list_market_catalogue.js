@@ -4,12 +4,13 @@ var async = require('async');
 var common = require('./common.js');
 
 // Create session to Betfair
-var appKey = process.env['BF_APPLICATION_KEY'] || "invalid";
-var session = common.session = betfair.newSession(appKey);
-common.loginName = process.env['BF_LOGIN'] || "nobody";
-common.password = process.env['BF_PASSWORD'] || "password";
+var settings = common.settings;
+settings.session = betfair.newSession();
+settings.login = process.env['BF_LOGIN'] || "nobody";
+settings.password = process.env['BF_PASSWORD'] || "password";
 
 // log all Betfair invocations
+var session = settings.session;
 session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
 
 // list market catalogue
@@ -27,7 +28,7 @@ function listMarketCatalogue(data, cb) {
     });
 }
 
-async.waterfall([common.login, listMarketCatalogue, common.logout], function (err, res) {
+async.series([common.login,  common.getDeveloperAppKeys, listMarketCatalogue, common.logout], function (err, res) {
     console.log("Done, err =", err);
     process.exit(0);
 });

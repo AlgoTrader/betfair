@@ -14,19 +14,19 @@ var session = settings.session;
 session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
 
 // list countries
-function listEventTypes(data, cb) {
+function listCurrentOrders(data, cb) {
     if (!cb)
         cb = data;
 
-    session.listEventTypes({filter:{}}, function (err, res) {
-        console.log("listEventTypes err=%s duration=%s", err, res.duration / 1000);
+    session.listCurrentOrders({filter:{}}, function (err, res) {
+        console.log("listCompetitions err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
         cb(err, res);
     });
 }
 
-async.series([common.login,  common.getDeveloperAppKeys, listEventTypes, common.logout], function (err, res) {
-    console.log("Done, err =", err);
+async.series([common.login, common.getDeveloperAppKeys, listCurrentOrders, common.logout], function (err, res) {
+    console.log("Done err =", err);
     process.exit(0);
 });
