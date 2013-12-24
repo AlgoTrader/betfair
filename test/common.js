@@ -92,7 +92,7 @@ exports.getDeveloperAppKeys = function (cb) {
 				keys.active = version.applicationKey;
 			}
 		}
-		session.setApplicationKeys(keys);
+		session.setApplicationKey(keys.active);
 		cb(null);
 	});
 }
