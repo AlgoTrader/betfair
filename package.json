@@ -25,6 +25,7 @@
   "license": "BSD",
   "dependencies" : { 
     "async":"*",
+    "underscore":"*",
     "node-uuid":"*", 
     "querystring":"*",
     "cookie":"*",

@@ -46,7 +46,7 @@ exports.logout = function (cb) {
 			return;
         }
 
-        console.log('Logout OK, %s secs', res.duration / 1000);
+        console.log('Logout OK, %s secs', res.duration / 1000, res);
         cb(null);
     });
 }
@@ -64,7 +64,7 @@ exports.keepAlive = function (cb) {
 			return;
 		}
 
-		console.log('keepAlive OK, %s secs', res.duration / 1000);
+		console.log('keepAlive OK, %s secs', res.duration / 1000, res);
 		cb(null);
 	});
 }
