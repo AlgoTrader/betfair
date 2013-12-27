@@ -16,8 +16,12 @@ var log = {
 	type: 'raw',
 	stream: new bunyan.RingBuffer({ limit: 100 })
 };
+var file_log = {
+	level: 'info',
+	path: 'log_invocations.txt'
+};
 var session = settings.session;
-session.startInvocationLog(log);
+session.startInvocationLog([log, file_log]);
 
 // list
 function listVenues(data, cb) {
