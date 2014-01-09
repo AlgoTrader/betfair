@@ -1,7 +1,7 @@
 Betfair JSON-RPC API for Node.js
 ================================================
 
-[![NPM](https://nodei.co/AlgoTrader/betfair?downloads=true)](https://nodei.co/npm/betfair/)
+[![NPM](https://nodei.co/npm/betfair.png?downloads=true)](https://nodei.co/npm/betfair/)
 
 ## Installation ##
 
