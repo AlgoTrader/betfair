@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Betfair JSON API",
   "main": "index.js",
-  "private" : false,
+  "private": false,
   "directories": {
     "test": "test"
   },
@@ -23,13 +23,14 @@
   ],
   "author": "AlgoTrader",
   "license": "BSD",
-  "dependencies" : { 
-    "async":"*",
-    "underscore":"*",
-    "node-uuid":"*", 
-    "querystring":"*",
-    "cookie":"*",
-    "bunyan":"*" 
+  "dependencies": {
+    "async": "*",
+    "underscore": "*",
+    "node-uuid": "*",
+    "querystring": "*",
+    "cookie": "*",
+    "bunyan": "*",
+    "forever-agent": "~0.5.0"
   },
   "optional": false
 }
