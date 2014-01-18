@@ -15,7 +15,7 @@ var betfair = require('betfair');
 var session = betfair.newSession('yourApllicationKey')
 
 session.login('name','password', function(err) {
-    console.log(err ? "Login OK" : "Login failed");
+    console.log(err ? "Login failed " + err : "Login OK");
 });
 ```
 
@@ -36,6 +36,6 @@ var invocation = session.listCountries({}, function(err,res) {
 Logout from Betfair
 ```JavaScript
 session.logout(function(err) {
-    console.log(err ? "Logout OK" : "Logout failed");
+    console.log(err ? "Logout failed: " + err : "Logout OK");
 });
 ```
