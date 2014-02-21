@@ -3,6 +3,8 @@ var betfair = require("../index.js");
 var async = require('async');
 var common = require('./common.js');
 
+var id = "1000000000061816";
+
 // Create session to Betfair
 var settings = common.settings;
 settings.session = betfair.newSession();
@@ -16,7 +18,7 @@ session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
 // list
 function listScores(cb) {
 	session.listScores({filter:{}, updateKeys: [
-	    {eventId:27102686, lastUpdateSequenceProcessed:0}
+	    {eventId:id, lastUpdateSequenceProcessed:0}
 	]}, function (err, res) {
 		console.log("listScores err=%s duration=%s", err, res.duration / 1000);
 		console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
