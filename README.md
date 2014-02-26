@@ -1,4 +1,4 @@
-Betfair JSON-RPC API for Node.js
+Betfair API-NG for Node.js
 ================================================
 
 [![NPM](https://nodei.co/npm/betfair.png?downloads=true)](https://nodei.co/npm/betfair/)
