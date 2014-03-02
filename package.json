@@ -29,8 +29,7 @@
     "node-uuid": "*",
     "querystring": "*",
     "cookie": "*",
-    "bunyan": "*",
-    "agentkeepalive": "*"
+    "bunyan": "*"
   },
   "optional": false
 }
