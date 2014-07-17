@@ -12,7 +12,7 @@ Betfair API-NG for Node.js
 Login to Betfair
 ```JavaScript
 var betfair = require('betfair');
-var session = betfair.newSession('yourApllicationKey')
+var session = betfair.newSession('yourApllicationKey');
 
 session.login('name','password', function(err) {
     console.log(err ? "Login failed " + err : "Login OK");
@@ -21,13 +21,13 @@ session.login('name','password', function(err) {
 
 Request countries list
 ```JavaScript
-var invocation = session.listCountries({}, function(err,res) {
+var invocation = session.listCountries({filter: {}}, function(err,res) {
     if(err) {
         console.log('listCountries failed');
     } else {
         for(var index in res.response.result) {
-            var item = res.response.result[i];
-            console.log("country:%s markets:%s", item.counry, item.markets)
+            var item = res.response.result[index];
+            console.log("country:%s markets:%s", item.counrtyCode, item.marketCount)
         }
     }
 });
