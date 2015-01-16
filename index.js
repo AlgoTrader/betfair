@@ -7,8 +7,8 @@
 // Export BetfairSession 
 // Used to invoke Betfair JSON-RPC methods
 var BetfairSession = require('./lib/betfair_session');
-exports.newSession = function (appKey) {
-    return new BetfairSession(appKey);
+exports.newSession = function (appKey, options) {
+    return new BetfairSession(appKey, options);
 };
 
 // Export BetfairPrice
