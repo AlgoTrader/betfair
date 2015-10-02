@@ -29,7 +29,8 @@
     "node-uuid": "*",
     "querystring": "*",
     "cookie": "*",
-    "bunyan": "*"
+    "bunyan": "*",
+    "befair-emulator"
   },
   "optional": false
 }
