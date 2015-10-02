@@ -1,4 +1,3 @@
-az
 var newBetfairPrice = require('../index.js').newBetfairPrice;
 
 console.log("Betfair price extreme values:")
