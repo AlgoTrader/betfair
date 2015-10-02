@@ -9,7 +9,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel -d ./lib ./src"
+    "build-src": "babel src/*.js --out-dir ./lib",
+    "build-test": "babel src/test --out-dir ./test",
+    "build": "npm run build-src && npm run build-test"
   },
   "repository": {
     "type": "git",
