@@ -30,7 +30,7 @@
     "querystring": "*",
     "cookie": "*",
     "bunyan": "*",
-    "befair-emulator": "*"
+    "betfair-emulator": "*"
   },
   "optional": false
 }

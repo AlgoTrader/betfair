@@ -5,9 +5,10 @@ var common = require('./common.js');
 
 // Create session to Betfair
 var settings = common.settings;
-settings.session = betfair.newSession();
 settings.login = process.env['BF_LOGIN'] || "nobody";
 settings.password = process.env['BF_PASSWORD'] || "password";
+settings.key = process.env['BF_APP_KEY'] || "nokey";
+settings.session = betfair.newSession(settings.key);
 
 // log all Betfair invocations
 var session = settings.session;
