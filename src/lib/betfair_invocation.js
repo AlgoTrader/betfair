@@ -192,7 +192,7 @@ BetfairInvocation.prototype.end = function () {
     // listMarketBook post-processing
     // orderProjection and matchedProjection are filled by emulator
     // for all the markets in bet emulation mode
-    if (self.method === "listMarketBook" && self.isSuccess) {
+    if (self.method === "listMarketBook" && self.isSuccess && self.isEmulated) {
         emulator.onListMarketBook(self.response.result);
     }
 
