@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-src": "babel src/lib --out-dir ./lib",
-    "build-test": "babel src/test --out-dir ./test",
+    "build-src": "babel --presets es2015 src/lib --out-dir ./lib",
+    "build-test": "babel --presets es2015 src/test --out-dir ./test",
     "build": "npm run build-src && npm run build-test"
   },
   "repository": {
@@ -28,12 +28,12 @@
   "license": "BSD",
   "dependencies": {
     "async": "*",
-    "underscore": "*",
+    "betfair-emulator": "*",
+    "bunyan": "*",
+    "cookie": "*",
     "node-uuid": "*",
     "querystring": "*",
-    "cookie": "*",
-    "bunyan": "*",
-    "betfair-emulator": "*"
+    "underscore": "^1.8.3"
   },
   "optional": false
 }
