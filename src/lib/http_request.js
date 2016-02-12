@@ -30,7 +30,7 @@ class HttpRequest extends Stream {
         const opts = _.extend({
             url: url,
             method: 'post',
-            data: data
+            requestBody: data
         }, options);
         return new HttpRequest(opts).execute(cb);
     }
@@ -61,7 +61,8 @@ class HttpRequest extends Stream {
             port: this.parsedUrl.port,
             path: this.parsedUrl.pathname,
             method: this.method,
-            headers: this.options.headers || {}
+            headers: this.options.headers || {},
+            rejectUnauthorized:false
         };
         if (USE_GZIP_COMPRESSION) {
             httpOptions.headers['accept-encoding'] = 'gzip';
@@ -94,7 +95,7 @@ class HttpRequest extends Stream {
             this.callback(err);
         });
         if (this.method === 'post') {
-            request.write(this.options.body);
+            request.write(this.options.requestBody);
         }
         this.startTime = process.hrtime();
         request.end();
@@ -112,11 +113,20 @@ class HttpRequest extends Stream {
         let start = this.startTime[0] + (this.startTime[1] / NANOSECONDS_IN_SECOND);
         let end = this.endTime[0] + (this.endTime[1] / NANOSECONDS_IN_SECOND);
 
-        // Compression efficiency results
+        // gzip compression efficiency
         let ratio = 100.0 - (this.rawResponseLength / this.responseBody.length) * 100.0;
         ratio = Math.round(ratio);
 
-        console.log('compression ratio:', ratio);
+        // if JSON, parse JSON into JS object
+        if (this.contentType === 'application/json') {
+            try {
+                this.responseBody = JSON.parse(this.responseBody);
+            } catch (error) {
+                this.responseBody = {
+                    error: 'Bad JSON'
+                };
+            }
+        }
 
         this.callback(null, {
             statusCode: this.statusCode,

@@ -18,7 +18,7 @@ class BetfairSession {
         this.applicationKey = applicationKey;
         BetfairInvocation.setApplicationKey(applicationKey);
 
-        this.createApiMethods('account', API_ACCOUNT_METHODS);
+        this.createApiMethods('accounts', API_ACCOUNT_METHODS);
     }
 
     // Create multiple Betfair API calls (account API, bettint api, etc)

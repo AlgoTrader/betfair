@@ -1,4 +1,8 @@
+const util = require('util');
 const BetfairSession = require('../lib/session.js');
 
-let session = new BetfairSession('1234567890');
+const appKey = process.env['BF_APP_KEY'] || "nokey";
+
+let session = new BetfairSession(appKey);
 console.log(BetfairSession, session, session.__proto__);
+session.getAccountFunds({}, (...args)=>{console.log(util.inspect(args,{depth:10}))});
