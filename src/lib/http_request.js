@@ -7,6 +7,8 @@ const zlib = require('zlib');
 const Stream = require('stream');
 const _ = require('underscore');
 
+const cookieJar = require('./cookie_jar.js');
+
 // always used with BF API
 const USE_GZIP_COMPRESSION = true;
 const NANOSECONDS_IN_SECOND = 1000000000;
@@ -72,6 +74,10 @@ class HttpRequest extends Stream {
             console.log("statusCode: ", result.statusCode, "headers: ", result.headers);
             this.statusCode = result.statusCode;
             this.contentType = result.headers['content-type'];
+            _.each(result.headers['set-cookie'], (item) => {
+                cookieJar.parse(item);
+            });
+            console.log(cookieJar.serialize());
 
             // just for stats
             result.on('data', (data) => {

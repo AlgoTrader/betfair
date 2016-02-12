@@ -30,10 +30,9 @@
     "async": "*",
     "betfair-emulator": "*",
     "bunyan": "*",
-    "cookie": "*",
     "node-uuid": "*",
     "querystring": "*",
-    "underscore": "^1.8.3"
+    "underscore": "*"
   },
   "optional": false
 }
