@@ -61,7 +61,7 @@ class HttpRequest extends Stream {
             port: this.parsedUrl.port,
             path: this.parsedUrl.pathname,
             method: this.method,
-            headers: {}
+            headers: this.options.headers || {}
         };
         if (USE_GZIP_COMPRESSION) {
             httpOptions.headers['accept-encoding'] = 'gzip';

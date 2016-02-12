@@ -25,6 +25,9 @@ const BETFAIR_API_ENDPOINTS = {
 
 // Betfair Exchange JSON-RPC API invocation (excluding Auth stuff)
 class BetfairInvocation {
+    static setApplicationKey(appKey) {
+        this.applicationKey = appKey;
+    }
     constructor(api, sessionKey, method, params = {}, isEmulated = false) {
         if (api !== "accounts" && api !== "betting" && api != "scores") {
             throw new Error('Bad api parameter:' + api);
@@ -54,8 +57,6 @@ class BetfairInvocation {
         let callback = _.once(cb);
 
         var httpOptions = {
-            agent: foreverAgentSSL,
-            //forever: true,
             headers: {
                 'X-Authentication': self.sessionKey,
                 'Content-Type': 'application/json',
@@ -63,11 +64,14 @@ class BetfairInvocation {
                 'Connection': 'keep-alive'
             }
         };
-        if(self.applicationKey) {
-            httpOptions.headers['X-Application'] = self.applicationKey;
+        if(this.applicationKey) {
+            httpOptions.headers['X-Application'] = this.applicationKey;
         }
-        HttpRequest.post(this.service, '{}', (err, result) => {
-            console.log(err, result);
+        HttpRequest.post(this.service, httpOptions, (err, result) => {
+            console.log(err, result.headers);
+            cb(null);
         });
     }
 }
+
+module.exports = BetfairInvocation;
