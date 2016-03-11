@@ -7,17 +7,21 @@ class CookieJar {
 
     // serialize the whole jar
     serialize() {
-        var cookies = [];
+        let cookies = [];
         _.each(this.cookies, (value, name) => {
-            cookies.push(cookie.serialize(name, value));
-        })
+            cookies.push([name, value].join('='));
+        });
         return cookies.join('; ');
     }
 
     // parse string and add cookies to cookie var
-    parse(cookies) {
-        console.log('!', cookie.parse(cookies));
-        _.extend(this.cookies, cookie.parse(cookies));
+    parse(cookies = []) {
+        console.log('cookies:', cookies);
+        cookies.forEach( (cookie) => {
+            let parts = cookie.split(';');
+            let [name, value] = parts[0].split('=');
+            this.cookies[name] = value;
+        })
     }
 
     // get cookie from jar
@@ -26,8 +30,8 @@ class CookieJar {
     }
 
     // store cookie to jar
-    set(name, value, options) {
-        cookie.serialize(name, value, options)
+    set(name, value) {
+        this.cookies[name] = value;
     }
 }
 

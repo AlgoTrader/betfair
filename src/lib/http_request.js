@@ -57,7 +57,7 @@ class HttpRequest extends Stream {
     }) {
         this.callback = cb;
         const transport = this.parsedUrl.protocol === 'https:' ? https : http;
-        const httpOptions = {
+        let httpOptions = {
             agent: (this.parsedUrl.protocol === 'https:' ? httpsAgent : httpAgent),
             host: this.parsedUrl.hostname,
             port: this.parsedUrl.port,
@@ -66,18 +66,19 @@ class HttpRequest extends Stream {
             headers: this.options.headers || {},
             rejectUnauthorized:false
         };
+        _.extend(httpOptions.headers, this.options.headers);
+        httpOptions.headers.cookie = cookieJar.serialize();
         if (USE_GZIP_COMPRESSION) {
             httpOptions.headers['accept-encoding'] = 'gzip';
         }
+        httpOptions.headers.cookie = cookieJar.serialize();
 
         let request = transport.request(httpOptions, (result) => {
-            console.log("statusCode: ", result.statusCode, "headers: ", result.headers);
+            //console.log("statusCode: ", result.statusCode, "headers: ", result.headers);
             this.statusCode = result.statusCode;
             this.contentType = result.headers['content-type'];
-            _.each(result.headers['set-cookie'], (item) => {
-                cookieJar.parse(item);
-            });
-            console.log(cookieJar.serialize());
+            this.cookies = result.headers['set-cookie'];
+            cookieJar.parse(this.cookies);
 
             // just for stats
             result.on('data', (data) => {
@@ -138,6 +139,7 @@ class HttpRequest extends Stream {
             statusCode: this.statusCode,
             contentType: this.contentType,
             responseBody: this.responseBody,
+            cookies: this.cookies,
             compressionRation: ratio,
             duration: Math.round((end - start) * 1000)
         });

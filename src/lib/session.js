@@ -1,5 +1,6 @@
-const _ = require('underscore');
-const BetfairInvocation = require('./invocation.js');
+let _ = require('underscore');
+let BetfairAuth = require('./auth.js');
+let BetfairInvocation = require('./invocation.js');
 
 // ************************************************************************
 // * Accounts API - https://api.betfair.com:443/exchange/account/json-rpc/v1/
@@ -19,6 +20,20 @@ class BetfairSession {
         BetfairInvocation.setApplicationKey(applicationKey);
 
         this.createApiMethods('accounts', API_ACCOUNT_METHODS);
+    }
+
+    startInvocationLog() {
+
+    }
+
+    setSslOptions() {
+
+    }
+
+    login(login, password) {
+        BetfairAuth.loginInteractive(login, password, (err, res) => {
+            console.log('BetfairSession.login:', err, res);
+        });
     }
 
     // Create multiple Betfair API calls (account API, bettint api, etc)
