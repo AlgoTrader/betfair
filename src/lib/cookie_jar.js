@@ -16,8 +16,7 @@ class CookieJar {
 
     // parse string and add cookies to cookie var
     parse(cookies = []) {
-        console.log('cookies:', cookies);
-        cookies.forEach( (cookie) => {
+        cookies.forEach((cookie) => {
             let parts = cookie.split(';');
             let [name, value] = parts[0].split('=');
             this.cookies[name] = value;

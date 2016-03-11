@@ -12,7 +12,8 @@ const AUTH_URLS = {
 class BetfairAuth {
     constructor() {
     }
-    loginInteractive(login, password, cb = ()=>{}) {
+
+    loginInteractive(login, password, cb = ()=> {}) {
         let formData = querystring.stringify({
             username: login,
             password: password,
@@ -29,28 +30,27 @@ class BetfairAuth {
             }
         };
         HttpRequest.post(AUTH_URLS.interactiveLogin, formData, options, (err, res) => {
-            console.log('loginInteractive cb', err, res);
-            if(err) {
+            if (err) {
                 cb(err);
                 return;
             }
             cb(null, {
-                success: res.statusCode==200,
+                success: res.statusCode == 200,
                 sessionId: cookieJar.get('ssoid'),
-                http: res
+                duration: res.duration,
             });
         });
     }
 
-    loginBot() {
+    loginBot(login, password, options, cb = ()=> {}) {
 
     }
 
-    logout() {
+    logout(cb = ()=> {}) {
 
     }
 
-    keepAlive() {
+    keepAlive(cb = ()=> {}) {
 
     }
 }

@@ -1,21 +1,33 @@
 // This module contains functions shared by multiple tests
-var util = require('util');
-var fs = require('fs');
+let util = require('util');
+let fs = require('fs');
+let betfair = require('../index.js');
 
 // session to use for all the invocations, should be set by test
-var settings = exports.settings = {};
+let settings = {};
 
-settings.sslOptions = {};
-var key = fs.existsSync("client-2048.key") && fs.readFileSync("client-2048.key");
-var cert = fs.existsSync("client-2048.crt") && fs.readFileSync("client-2048.crt");
-if (key && cert) {
-    settings.isBotLogin = true;
-    settings.sslOptions = { key: key, cert: cert};
+function initialize() {
+	// environment
+	settings.appKey = process.env['BF_APP_KEY'] || "key";
+	settings.login = process.env['BF_LOGIN'] || "nobody";
+	settings.password = process.env['BF_PASSWORD'] || "password";
+
+	// SSL key/certificate
+	let key = fs.existsSync("client-2048.key") && fs.readFileSync("client-2048.key");
+	let cert = fs.existsSync("client-2048.crt") && fs.readFileSync("client-2048.crt");
+	if (key && cert) {
+		settings.isBotLogin = true;
+		settings.sslOptions = {key: key, cert: cert};
+	}
+
+	// create session
+	settings.session = new betfair.BetfairSession(settings.appKey);
+
+	return settings.session;
 }
-//console.log(settings);
 
 // login to Betfair
-exports.login = function (cb) {
+function login(cb) {
 	cb = cb || function() {};
 
 	console.log('===== Logging in to Betfair (' + (settings.isBotLogin ? 'bot' : 'interactive') + ') =====');
@@ -34,7 +46,7 @@ exports.login = function (cb) {
 }
 
 // logout from Betfair
-exports.logout = function (cb) {
+function logout(cb) {
 	cb = cb || function() {};
 
     console.log('===== Logging out... =====');
@@ -52,7 +64,7 @@ exports.logout = function (cb) {
 }
 
 // keepAlive
-exports.keepAlive = function (cb) {
+function keepAlive(cb) {
 	cb = cb || function() {};
 
 	console.log('===== Sending keepAlive ... =====');
@@ -69,35 +81,8 @@ exports.keepAlive = function (cb) {
 	});
 }
 
-// getDeveloperAppKeys
-exports.getDeveloperAppKeys = function (cb) {
-	cb = cb || function() {};
-
-	console.log('===== Getting Application Keys... =====');
-	var session = settings.session;
-	session.getDeveloperAppKeys({}, function (err, res) {
-		if (err) {
-			console.log('Failed to get a key', err);
-			cb(err);
-			return;
-		}
-		//console.log(util.inspect(res.response, {depth:10}));
-		var keys = {};
-		var app = res.response.result[0];
-		for(var cnt=0; cnt<app.appVersions.length; ++cnt) {
-			var version = app.appVersions[cnt];
-			if(version.delayData) {
-				keys.delayed = version.applicationKey;
-			} else {
-				keys.active = version.applicationKey;
-			}
-		}
-		session.setApplicationKey(keys.active);
-		cb(null);
-	});
-}
 // list market catalogue
-exports.listMarketCatalogue = function (cb) {
+function listMarketCatalogue(cb) {
     // Tennis, MATCH ODDS
     console.log('===== calling listMarketCatalogue... =====');
     var session = settings.session;
@@ -115,7 +100,7 @@ exports.listMarketCatalogue = function (cb) {
 }
 
 // select the most far market from the markets array
-exports.selectMarket = function (cb) {
+function selectMarket(cb) {
     console.log('===== select the market... =====');
 	var session = settings.session;
     if (settings.markets.length < 1) {
@@ -126,3 +111,11 @@ exports.selectMarket = function (cb) {
 		settings.selectedMarket.marketId, settings.selectedMarket.event.name);
     cb(null);
 }
+
+module.exports = {
+	settings: settings,
+    initialize: initialize,
+	login: login,
+    keepAlive: keepAlive,
+	logout: logout
+};

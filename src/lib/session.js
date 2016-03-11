@@ -30,10 +30,19 @@ class BetfairSession {
 
     }
 
-    login(login, password) {
+    login(login, password, cb = ()=>{}) {
         BetfairAuth.loginInteractive(login, password, (err, res) => {
             console.log('BetfairSession.login:', err, res);
+            cb(err, res);
         });
+    }
+
+    keepAlive(cb = ()=>{}) {
+        cb(null);
+    }
+
+    logout(cb = ()=>{}) {
+        cb(null);
     }
 
     // Create multiple Betfair API calls (account API, bettint api, etc)
