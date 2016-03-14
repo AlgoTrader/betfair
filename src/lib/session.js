@@ -1,3 +1,6 @@
+// (C) 2016 Anton Zemlyanov, rewritten in JavaScript 6 (ES6)
+'use strict';
+
 let _ = require('underscore');
 let auth = require('./auth.js');
 let BetfairInvocation = require('./invocation.js');
@@ -12,6 +15,14 @@ const API_ACCOUNT_METHODS = [
     'getAccountFunds'
 ];
 
+// ************************************************************************
+// * Betting API - https://api.betfair.com:443/exchange/betting/json-rpc/v1/
+// ************************************************************************
+const API_BETTING_METHODS = [
+    'listCountries'
+];
+
+
 class BetfairSession {
     // Constructor
     constructor(applicationKey) {
@@ -20,6 +31,7 @@ class BetfairSession {
         BetfairInvocation.setApplicationKey(applicationKey);
 
         this.createApiMethods('accounts', API_ACCOUNT_METHODS);
+        this.createApiMethods('betting', API_BETTING_METHODS);
     }
 
     startInvocationLog() {
@@ -63,7 +75,14 @@ class BetfairSession {
                 throw('params should be object');
             }
             var invocation = new BetfairInvocation(api, this.sessionKey, methodName, params);
-            invocation.execute(callback);
+            invocation.execute((err,result) => {
+                //console.log(methodName, 'error', err, 'result', result);
+                if(err) {
+                    callback(err);
+                    return;
+                }
+                callback(null, result);
+            });
             return invocation;
         }
     }

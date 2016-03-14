@@ -1,4 +1,5 @@
-'use stict'
+// (C) 2016 Anton Zemlyanov, rewritten in JavaScript 6 (ES6)
+'use strict';
 
 const _ = require('underscore');
 const HttpRequest = require('./http_request.js');
@@ -32,7 +33,7 @@ class BetfairInvocation {
         if (api !== "accounts" && api !== "betting" && api != "scores") {
             throw new Error('Bad api parameter:' + api);
         }
-        console.log(arguments);
+        //console.log(arguments);
 
         // input params
         this.api = api;
@@ -52,7 +53,7 @@ class BetfairInvocation {
             "params": this.params
         };
         this.response = null;
-        console.log(this);
+        //console.log(this);
     }
 
     execute(cb = () => {}) {
@@ -64,18 +65,25 @@ class BetfairInvocation {
                 'Content-Type': 'application/json',
                 'Content-Length': this.jsonRequestBody.length,
                 'Connection': 'keep-alive'
-            },
+            }
         };
         if(this.applicationKey) {
             httpOptions.headers['X-Application'] = this.applicationKey;
         }
-        console.log('$', this.service, this.jsonRequestBody);
+        //console.log('invocation start', this.service, this.jsonRequestBody);
         HttpRequest.post(this.service, this.jsonRequestBody, httpOptions, (err, result) => {
             if(err) {
                 callback(err);
                 return;
             }
-            callback(null, result.responseBody);
+            //console.log('invocation result',err,result);
+            callback(null, {
+                request: this.request,
+                response: result.responseBody,
+                result: result.responseBody && result.responseBody.result,
+                error: result.responseBody && result.responseBody.error,
+                duration: result.duration
+            });
         });
     }
 }

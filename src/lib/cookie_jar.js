@@ -1,4 +1,7 @@
-const _ = require('underscore');
+// (C) 2016 Anton Zemlyanov, rewritten in JavaScript 6 (ES6)
+'use strict';
+
+let _ = require('underscore');
 
 class CookieJar {
     constructor() {
