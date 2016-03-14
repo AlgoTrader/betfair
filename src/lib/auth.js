@@ -24,6 +24,7 @@ class BetfairAuth {
         });
         let options = {
             headers: {
+                "accept": "application/json",
                 "content-type": "application/x-www-form-urlencoded",
                 'content-length': formData.length,
                 'x-application': 'BetfairAPI'
@@ -34,10 +35,15 @@ class BetfairAuth {
                 cb(err);
                 return;
             }
+            if (res.responseBody.status != 'SUCCESS') {
+                cb(res.responseBody.error);
+                return;
+            }
             cb(null, {
-                success: res.statusCode == 200,
-                sessionId: cookieJar.get('ssoid'),
+                success: res.responseBody.status == 'SUCCESS',
+                sessionKey: res.responseBody.token,
                 duration: res.duration,
+                responseBody: res.responseBody
             });
         });
     }
@@ -46,12 +52,60 @@ class BetfairAuth {
 
     }
 
-    logout(cb = ()=> {}) {
+    logout(sessionKey, cb = ()=> {}) {
+        let formData = querystring.stringify({
+            product: 'home.betfair.int',
+            url: 'https://www.betfair.com/'
+        });
 
+        // {'X-Authentication':sessionKey}
+        let options = {
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/x-www-form-urlencoded",
+                'content-length': formData.length,
+                "x-authentication": sessionKey
+            }
+        };
+        HttpRequest.post(AUTH_URLS.logout, formData, options, (err, res) => {
+            if (res.responseBody.status != 'SUCCESS') {
+                cb(res.responseBody.error);
+                return;
+            }
+            cb(null, {
+                success: res.responseBody.status == 'SUCCESS',
+                duration: res.duration,
+                responseBody: res.responseBody
+            });
+        });
     }
 
-    keepAlive(cb = ()=> {}) {
+    keepAlive(sessionKey, cb = ()=> {}) {
+        let formData = querystring.stringify({
+            product: 'home.betfair.int',
+            url: 'https://www.betfair.com/'
+        });
 
+        // {'X-Authentication':sessionKey}
+        let options = {
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/x-www-form-urlencoded",
+                'content-length': formData.length,
+                "x-authentication": sessionKey
+            }
+        };
+        HttpRequest.post(AUTH_URLS.keepAlive, formData, options, (err, res) => {
+            if (res.responseBody.status != 'SUCCESS') {
+                cb(res.responseBody.error);
+                return;
+            }
+            cb(null, {
+                success: res.responseBody.status == 'SUCCESS',
+                duration: res.duration,
+                responseBody: res.responseBody
+            });
+        });
     }
 }
 

@@ -40,7 +40,7 @@ function login(cb) {
 			return;
         }
 
-        console.log('Login OK, %s secs', res.duration / 1000);
+        console.log('Login OK, %s secs', res.duration / 1000, res);
         cb(null);
     });
 }

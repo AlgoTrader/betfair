@@ -1,5 +1,5 @@
 let _ = require('underscore');
-let BetfairAuth = require('./auth.js');
+let auth = require('./auth.js');
 let BetfairInvocation = require('./invocation.js');
 
 // ************************************************************************
@@ -31,18 +31,22 @@ class BetfairSession {
     }
 
     login(login, password, cb = ()=>{}) {
-        BetfairAuth.loginInteractive(login, password, (err, res) => {
-            console.log('BetfairSession.login:', err, res);
+        auth.loginInteractive(login, password, (err, res) => {
+            this.sessionKey = res.sessionKey;
             cb(err, res);
         });
     }
 
     keepAlive(cb = ()=>{}) {
-        cb(null);
+        auth.keepAlive(this.sessionKey, (err, res) => {
+            cb(err, res);
+        });
     }
 
     logout(cb = ()=>{}) {
-        cb(null);
+        auth.logout(this.sessionKey, (err, res) => {
+            cb(err, res);
+        });
     }
 
     // Create multiple Betfair API calls (account API, bettint api, etc)
