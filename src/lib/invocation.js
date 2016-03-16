@@ -17,6 +17,11 @@ const BETFAIR_API_ENDPOINTS = {
         version: "v1.0",
         service: BETFAIR_API_HOST + "/exchange/betting/json-rpc/v1/"
     },
+    heartbeat: {
+        type: "HeartbeatAPING",
+        version: "v1.0",
+        service: BETFAIR_API_HOST + "/exchange/heartbeat/json-rpc/v1"
+    },
     scores: {
         type: "ScoresAPING",
         version: "v1.0",
@@ -29,8 +34,17 @@ class BetfairInvocation {
     static setApplicationKey(appKey) {
         BetfairInvocation.applicationKey = appKey;
     }
+
+    static startInvocationLog(logger) {
+        BetfairInvocation.logger = logger;
+    }
+
+    static stopInvocationLog() {
+        BetfairInvocation.logger = null;
+    }
+
     constructor(api, sessionKey, method, params = {}, isEmulated = false) {
-        if (api !== "accounts" && api !== "betting" && api != "scores") {
+        if (api !== "accounts" && api !== "betting" && api != "heartbeat" && api != "scores") {
             throw new Error('Bad api parameter:' + api);
         }
         //console.log(arguments);
@@ -67,16 +81,15 @@ class BetfairInvocation {
                 'Connection': 'keep-alive'
             }
         };
-        if(this.applicationKey) {
+        if (this.applicationKey) {
             httpOptions.headers['X-Application'] = this.applicationKey;
         }
         //console.log('invocation start', this.service, this.jsonRequestBody);
         HttpRequest.post(this.service, this.jsonRequestBody, httpOptions, (err, result) => {
-            if(err) {
+            if (err) {
                 callback(err);
                 return;
             }
-            //console.log('invocation result',err,result);
             callback(null, {
                 request: this.request,
                 response: result.responseBody,
@@ -84,6 +97,16 @@ class BetfairInvocation {
                 error: result.responseBody && result.responseBody.error,
                 duration: result.duration
             });
+            // log invocation
+            if (BetfairInvocation.logger) {
+                BetfairInvocation.logger.info(this.method, {
+                    api: this.api,
+                    duration: result.duration,
+                    isSuccess: !(result.responseBody && result.responseBody.error),
+                    length: result.length,
+                    httpStatusCode: result.statusCode
+                });
+            }
         });
     }
 }

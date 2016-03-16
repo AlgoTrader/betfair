@@ -23,6 +23,10 @@ function initialize() {
 	// create session
 	settings.session = new betfair.BetfairSession(settings.appKey);
 
+	let logger = new betfair.Logger('calls', 'INFO');
+	logger.addFileLog('log_invocations.txt');
+	settings.session.startInvocationLog(logger);
+
 	return settings.session;
 }
 

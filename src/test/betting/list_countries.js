@@ -1,10 +1,9 @@
-var betfair = require("../index.js");
 var async = require('async');
-var common = require('./common.js');
+var betfair = require("../../index.js");
+var common = require('../common.js');
 
 // Create session to Betfair and start log
 var session = common.initialize();
-session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
 
 // list countries
 function listCountries(cb=()=>{}) {

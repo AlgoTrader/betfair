@@ -68,20 +68,20 @@ class BetfairSession {
 
         this.createApiMethods('betting', API_BETTING_METHODS);
         this.createApiMethods('accounts', API_ACCOUNT_METHODS);
-        this.createApiMethods('heartbeat', API_BETTING_METHODS);
+        this.createApiMethods('heartbeat', API_HEARTBEAT_METHODS);
         this.createApiMethods('scores', API_SCORES_METHODS);
     }
 
-    startInvocationLog() {
-
+    startInvocationLog(logger) {
+        BetfairInvocation.startInvocationLog(logger);
     }
 
     stopInvocationLog() {
-
+        BetfairInvocation.stopInvocationLog();
     }
 
     setSslOptions() {
-
+        // TODO, bot login is not supported yet
     }
 
     login(login, password, cb = ()=>{}) {

@@ -122,7 +122,8 @@ class HttpRequest extends Stream {
         let end = this.endTime[0] + (this.endTime[1] / NANOSECONDS_IN_SECOND);
 
         // gzip compression efficiency
-        let ratio = 100.0 - (this.rawResponseLength / this.responseBody.length) * 100.0;
+        let responseBodyLength = this.responseBody.length;
+        let ratio = 100.0 - (this.rawResponseLength / responseBodyLength) * 100.0;
         ratio = Math.round(ratio);
 
         // if JSON, parse JSON into JS object
@@ -141,6 +142,7 @@ class HttpRequest extends Stream {
             contentType: this.contentType,
             responseBody: this.responseBody,
             cookies: this.cookies,
+            length: responseBodyLength,
             compressionRation: ratio,
             duration: Math.round((end - start) * 1000)
         });

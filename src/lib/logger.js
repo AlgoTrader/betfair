@@ -7,6 +7,7 @@
  */
 
 let os = require('os');
+let fs = require('fs');
 let _ = require('underscore');
 
 const LOG_LEVELS = {
@@ -19,10 +20,10 @@ const LOG_LEVELS = {
 };
 
 class Logger {
-    constructor(name, level = 'INFO', logs = []) {
+    constructor(name, level = 'INFO') {
         this.name = name;
         this.currentLogLevel = LOG_LEVELS[level];
-        this.logs = logs;
+        this.logs = [];
 
         ['trace', 'debug', 'info', 'warn', 'error', 'fatal'].forEach((level) => {
             this[level] = (message, data) => {
@@ -30,38 +31,55 @@ class Logger {
                 if (logLevel < this.currentLogLevel) {
                     return;
                 }
+                const now = new Date();
                 let logItem = {
                     name: this.name,
                     hostname: os.hostname(),
                     pid: process.pid,
                     level: logLevel,
                     msg: message,
-                    time: Date.now()
+                    time: now.toISOString(),
+                    v: '0'
                 };
-                if(data) {
+                if (data) {
                     _.extend(logItem, data);
-                    this.logs.forEach((log) => {log.write(logItem)});
                 }
+                this.logs.forEach((log) => {log.write(logItem)});
             }
         });
+        console.log(this);
     }
 
-    flush() {
-        this.logs.forEach((log) => {log.flush()});
+    addFileLog(filename) {
+        this.logs.push(new FileLog(filename));
+    }
+
+    addMemoryLog(limit) {
+        this.logs.push(new MemoryLog(limit));
+    }
+
+    close() {
+        this.logs.forEach((log) => {
+            log.close()
+        });
+        this.logs = [];
     }
 }
 
 class FileLog {
     constructor(filename) {
-
+        this.file = fs.createWriteStream(filename, {flags: 'w', defaultEncoding: 'utf8', autoClose: true});
+        this.file.on('error', (error) => {
+            console.log('file log error', error);
+        });
     }
 
     write(data) {
-
+        this.file.write(JSON.stringify(data));
     }
 
-    flush() {
-
+    close() {
+        this.file.end();
     }
 }
 
@@ -72,16 +90,14 @@ class MemoryLog {
     }
 
     write(data) {
-        this.log.push()
+        this.log.push(data);
+        while(this.log.length > this.limit) {
+            this.log.unshift();
+        }
     }
 
     flush() {
-
     }
 }
 
-module.exports = {
-    Logger: Logger,
-    FileLog: FileLog,
-    MemoryLog: MemoryLog
-};
+module.exports = Logger;
