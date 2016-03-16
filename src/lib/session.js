@@ -6,22 +6,58 @@ let auth = require('./auth.js');
 let BetfairInvocation = require('./invocation.js');
 
 // ************************************************************************
+// * Betting API - https://api.betfair.com:443/exchange/betting/json-rpc/v1/
+// ************************************************************************
+const API_BETTING_METHODS = [
+    // read-only
+    'listEventTypes',
+    'listCompetitions',
+    'listTimeRanges',
+    'listEvents',
+    'listMarketTypes',
+    'listCountries',
+    'listVenues',
+    'listMarketCatalogue',
+    'listMarketBook',
+    'listMarketProfitAndLoss',
+    'listCurrentOrders',
+    'listClearedOrders',
+    // transactional
+    'placeOrders',
+    'cancelOrders',
+    'replaceOrders',
+    'updateOrders'
+];
+
+// ************************************************************************
 // * Accounts API - https://api.betfair.com:443/exchange/account/json-rpc/v1/
 // ************************************************************************
 const API_ACCOUNT_METHODS = [
     'createDeveloperAppKeys',
-    'getDeveloperAppKeys',
     'getAccountDetails',
-    'getAccountFunds'
+    'getAccountFunds',
+    'getDeveloperAppKeys',
+    'getAccountStatement',
+    'listCurrencyRates',
+    'transferFunds'
 ];
 
 // ************************************************************************
-// * Betting API - https://api.betfair.com:443/exchange/betting/json-rpc/v1/
+// * Heartbeat API - https://api.betfair.com:443/exchange/betting/json-rpc/v1/
 // ************************************************************************
-const API_BETTING_METHODS = [
-    'listCountries'
+const API_HEARTBEAT_METHODS = [
+    'heartbeat'
 ];
 
+// ************************************************************************
+// * Scores API - https://api.betfair.com:443/exchange/scores/json-rpc/v1/
+// ************************************************************************
+const API_SCORES_METHODS = [
+    'listRaceDetails',
+    'listScores',
+    'listIncidents',
+    'listAvailableEvents'
+];
 
 class BetfairSession {
     // Constructor
@@ -30,11 +66,17 @@ class BetfairSession {
         this.applicationKey = applicationKey;
         BetfairInvocation.setApplicationKey(applicationKey);
 
-        this.createApiMethods('accounts', API_ACCOUNT_METHODS);
         this.createApiMethods('betting', API_BETTING_METHODS);
+        this.createApiMethods('accounts', API_ACCOUNT_METHODS);
+        this.createApiMethods('heartbeat', API_BETTING_METHODS);
+        this.createApiMethods('scores', API_SCORES_METHODS);
     }
 
     startInvocationLog() {
+
+    }
+
+    stopInvocationLog() {
 
     }
 
@@ -74,7 +116,7 @@ class BetfairSession {
             if(!_.isObject(params)) {
                 throw('params should be object');
             }
-            var invocation = new BetfairInvocation(api, this.sessionKey, methodName, params);
+            let invocation = new BetfairInvocation(api, this.sessionKey, methodName, params);
             invocation.execute((err,result) => {
                 //console.log(methodName, 'error', err, 'result', result);
                 if(err) {
