@@ -47,7 +47,6 @@ class Logger {
                 this.logs.forEach((log) => {log.write(logItem)});
             }
         });
-        console.log(this);
     }
 
     addFileLog(filename) {

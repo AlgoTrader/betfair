@@ -32,8 +32,7 @@ function initialize() {
 }
 
 function exit(code) {
-	"use strict";
-	_.defer(() => process.exit(code))
+	_.delay(() => process.exit(code), 100);
 }
 
 // login to Betfair
@@ -128,5 +127,7 @@ module.exports = {
 	exit,
 	login,
     keepAlive,
-	logout
+	logout,
+	listMarketCatalogue,
+	selectMarket
 };

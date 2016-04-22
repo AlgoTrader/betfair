@@ -1,7 +1,7 @@
 // Betfair account settings
 var betfair = require("../index.js");
 var async = require('async');
-var common = require('./common.js');
+var common = require('./../common.js');
 
 // Create session to Betfair
 var settings = common.settings;
