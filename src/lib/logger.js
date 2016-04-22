@@ -75,7 +75,7 @@ class FileLog {
     }
 
     write(data) {
-        this.file.write(JSON.stringify(data));
+        this.file.write(JSON.stringify(data)+'\n');
     }
 
     close() {

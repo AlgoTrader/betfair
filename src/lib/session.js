@@ -73,10 +73,12 @@ class BetfairSession {
     }
 
     startInvocationLog(logger) {
+        auth.startInvocationLog(logger);
         BetfairInvocation.startInvocationLog(logger);
     }
 
     stopInvocationLog() {
+        auth.stopInvocationLog();
         BetfairInvocation.stopInvocationLog();
     }
 
@@ -84,20 +86,20 @@ class BetfairSession {
         // TODO, bot login is not supported yet
     }
 
-    login(login, password, cb = ()=>{}) {
+    login(login, password, cb = ()=> {}) {
         auth.loginInteractive(login, password, (err, res) => {
             this.sessionKey = res.sessionKey;
             cb(err, res);
         });
     }
 
-    keepAlive(cb = ()=>{}) {
+    keepAlive(cb = ()=> {}) {
         auth.keepAlive(this.sessionKey, (err, res) => {
             cb(err, res);
         });
     }
 
-    logout(cb = ()=>{}) {
+    logout(cb = ()=> {}) {
         auth.logout(this.sessionKey, (err, res) => {
             cb(err, res);
         });
@@ -112,14 +114,14 @@ class BetfairSession {
 
     // Arbitrary Betfair API RPC call constructor
     createMethod(api, methodName) {
-        return function (params, callback = ()=>{}) {
-            if(!_.isObject(params)) {
+        return function(params, callback = ()=> {}) {
+            if (!_.isObject(params)) {
                 throw('params should be object');
             }
             let invocation = new BetfairInvocation(api, this.sessionKey, methodName, params);
-            invocation.execute((err,result) => {
+            invocation.execute((err, result) => {
                 //console.log(methodName, 'error', err, 'result', result);
-                if(err) {
+                if (err) {
                     callback(err);
                     return;
                 }

@@ -1,6 +1,7 @@
 var async = require('async');
 var betfair = require("../../index.js");
 var common = require('../common.js');
+var _ = require('underscore');
 
 // Create session to Betfair and start log
 var session = common.initialize();
@@ -17,5 +18,5 @@ function listCountries(cb=()=>{}) {
 
 async.series([common.login,  listCountries, common.logout], function (err, res) {
     console.log("Done, err =", err);
-    process.exit(0);
+    common.exit(0);
 });

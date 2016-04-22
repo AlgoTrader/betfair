@@ -2,6 +2,7 @@
 let util = require('util');
 let fs = require('fs');
 let betfair = require('../index.js');
+let _ = require('underscore');
 
 // session to use for all the invocations, should be set by test
 let settings = {};
@@ -28,6 +29,11 @@ function initialize() {
 	settings.session.startInvocationLog(logger);
 
 	return settings.session;
+}
+
+function exit(code) {
+	"use strict";
+	_.defer(() => process.exit(code))
 }
 
 // login to Betfair
@@ -117,9 +123,10 @@ function selectMarket(cb) {
 }
 
 module.exports = {
-	settings: settings,
-    initialize: initialize,
-	login: login,
-    keepAlive: keepAlive,
-	logout: logout
+	settings,
+    initialize,
+	exit,
+	login,
+    keepAlive,
+	logout
 };

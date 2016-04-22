@@ -16,6 +16,26 @@ class BetfairAuth {
     constructor() {
     }
 
+    startInvocationLog(logger) {
+        this.logger = logger;
+    }
+
+    stopInvocationLog() {
+        this.logger = null;
+    }
+
+    logAuthCall(method, result) {
+        if (this.logger) {
+            this.logger.info(method, {
+                api: 'auth',
+                duration: result.duration,
+                isSuccess: !(result.responseBody && result.responseBody.error),
+                length: result.length,
+                httpStatusCode: result.statusCode
+            });
+        }
+    }
+
     loginInteractive(login, password, cb = ()=> {}) {
         let formData = querystring.stringify({
             username: login,
@@ -48,6 +68,8 @@ class BetfairAuth {
                 duration: res.duration,
                 responseBody: res.responseBody
             });
+            // log successful result
+            this.logAuthCall('loginInteractive', res);
         });
     }
 
@@ -80,6 +102,8 @@ class BetfairAuth {
                 duration: res.duration,
                 responseBody: res.responseBody
             });
+            // log successful result
+            this.logAuthCall('logout', res);
         });
     }
 
@@ -108,6 +132,8 @@ class BetfairAuth {
                 duration: res.duration,
                 responseBody: res.responseBody
             });
+            // log successful result
+            this.logAuthCall('keepAlive', res);
         });
     }
 }
