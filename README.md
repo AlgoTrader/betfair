@@ -10,6 +10,7 @@ Betfair API-NG for Node.js
 or
 
     git clone git@github.com:AlgoTrader/betfair.git
+    cd betfair
     npm install
     npm run build
 
@@ -20,7 +21,7 @@ betrair API was completly rewritten in ES2015 and requires build step before usa
 Login to Betfair
 ```JavaScript
 var betfair = require('betfair');
-var session = new betfair Session('yourApllicationKey');
+var session = new betfair.Session('yourApllicationKey');
 
 session.login('name','password', function(err) {
     console.log(err ? "Login failed " + err : "Login OK");
