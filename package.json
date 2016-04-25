@@ -1,6 +1,6 @@
 {
   "name": "betfair",
-  "version": "0.5.1",
+  "version": "0.6.1",
   "description": "Betfair JSON API",
   "main": "index.js",
   "private": false,
@@ -29,7 +29,6 @@
   "dependencies": {
     "async": "*",
     "betfair-emulator": "*",
-    "bunyan": "*",
     "node-uuid": "*",
     "querystring": "*",
     "underscore": "*"
