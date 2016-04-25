@@ -74,7 +74,7 @@ class FileLog {
     }
 
     write(data) {
-        this.file.write(JSON.stringify(data)+'\n');
+        this.file.write(JSON.stringify(data) + '\n');
     }
 
     close() {
@@ -90,7 +90,7 @@ class MemoryLog {
 
     write(data) {
         this.log.push(data);
-        while(this.log.length > this.limit) {
+        while (this.log.length > this.limit) {
             this.log.unshift();
         }
     }

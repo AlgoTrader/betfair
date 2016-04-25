@@ -65,7 +65,7 @@ class HttpRequest extends Stream {
             path: this.parsedUrl.pathname,
             method: this.method,
             headers: this.options.headers || {},
-            rejectUnauthorized:false
+            rejectUnauthorized: false
         };
         _.extend(httpOptions.headers, this.options.headers);
         httpOptions.headers.cookie = cookieJar.serialize();

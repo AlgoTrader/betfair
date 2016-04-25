@@ -12,7 +12,7 @@ function BetfairPrice(size) {
     this.setStake(size);
 }
 
-BetfairPrice.prototype.setStake = function (size) {
+BetfairPrice.prototype.setStake = function(size) {
     if (!size)
         size = 1.01;
     if (typeof (size) === 'string')
@@ -43,11 +43,11 @@ BetfairPrice.prototype.setStake = function (size) {
     else
         size = 1000.0;
 
-    this.size = size.toFixed(2)*1;
+    this.size = size.toFixed(2) * 1;
     return;
 }
 
-BetfairPrice.prototype.toString = function (size) {
+BetfairPrice.prototype.toString = function(size) {
     var str = this.size.toFixed(2);
     if (str.charAt(str.length - 1) === '0')
         str = str.substr(0, str.length - 1);
@@ -56,7 +56,7 @@ BetfairPrice.prototype.toString = function (size) {
     return str;
 }
 
-BetfairPrice.prototype.increasePrice = function () {
+BetfairPrice.prototype.increasePrice = function() {
     var size = this.size;
 
     if (size < (2.0 - epsilon))
@@ -82,11 +82,11 @@ BetfairPrice.prototype.increasePrice = function () {
     else
         size = 1000.0;
 
-    this.size = size.toFixed(2)*1;
+    this.size = size.toFixed(2) * 1;
     return this;
 }
 
-BetfairPrice.prototype.decreasePrice = function () {
+BetfairPrice.prototype.decreasePrice = function() {
     var size = this.size;
 
     if (size > (100.0 + epsilon))
@@ -112,11 +112,11 @@ BetfairPrice.prototype.decreasePrice = function () {
     else
         size = 1.01;
 
-    this.size = size.toFixed(2)*1;
+    this.size = size.toFixed(2) * 1;
     return this;
 }
 
-BetfairPrice.prototype.spreadToPrice = function (size) {
+BetfairPrice.prototype.spreadToPrice = function(size) {
     var other = new BetfairPrice(size);
     if (Math.abs(this.size - other.size) < epsilon)
         return 0;

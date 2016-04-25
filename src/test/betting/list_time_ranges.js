@@ -6,18 +6,17 @@ var _ = require('underscore');
 // Create session to Betfair and start log
 var session = common.initialize();
 
-// list countries
-function listTimeRanges(cb=()=>{}) {
-	console.log('===== Invoke listTimeRanges... =====');
-	session.listTimeRanges({filter:{}, granularity:'DAYS'}, function (err, res) {
-		console.log("listTimeRanges err=%s duration=%s", err, res.duration / 1000);
-		console.log("Request:%s\n", JSON.stringify(res.request, null, 2));
-		console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
-		cb(err, res);
-	});
+function listTimeRanges(cb = ()=> {}) {
+    console.log('===== Invoke listTimeRanges... =====');
+    session.listTimeRanges({filter: {}, granularity: 'DAYS'}, function(err, res) {
+        console.log("listTimeRanges err=%s duration=%s", err, res.duration / 1000);
+        console.log("Request:%s\n", JSON.stringify(res.request, null, 2));
+        console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
+        cb(err, res);
+    });
 }
 
-async.series([common.login,  listTimeRanges, common.logout], function (err, res) {
-	console.log("Done, err =", err);
-	common.exit(0);
+async.series([common.login, listTimeRanges, common.logout], function(err, res) {
+    console.log("Done, err =", err);
+    common.exit(0);
 });

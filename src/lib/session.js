@@ -88,7 +88,7 @@ class BetfairSession {
 
     login(login, password, cb = ()=> {}) {
         auth.loginInteractive(login, password, (err, res) => {
-            if(err) {
+            if (err) {
                 cb(err);
                 return;
             }

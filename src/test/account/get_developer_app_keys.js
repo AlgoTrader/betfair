@@ -1,24 +1,15 @@
-// Betfair account data
-var betfair = require("../index.js");
 var async = require('async');
-var common = require('./../common.js');
+var betfair = require("../../index.js");
+var common = require('../common.js');
+var _ = require('underscore');
 
-// Create session to Betfair
-var settings = common.settings;
-settings.session = betfair.newSession();
-settings.login = process.env['BF_LOGIN'] || "nobody";
-settings.password = process.env['BF_PASSWORD'] || "password";
-
-// log all Betfair invocations
-var session = settings.session;
-session.startInvocationLog({level: 'info', path: 'log_invocations.txt'});
+// Create session to Betfair and start log
+var session = common.initialize();
 
 // list countries
-function getDeveloperAppKeys(data, cb) {
-    if (!cb)
-        cb = data;
-
-    session.getDeveloperAppKeys({}, function (err, res) {
+function getDeveloperAppKeys(cb) {
+    console.log('===== Invoke getDeveloperAppKeys... =====');
+    session.getDeveloperAppKeys({}, function(err, res) {
         console.log("getDeveloperAppKeys err=%s duration=%s", err, res.duration / 1000);
         console.log("Request:%s\n", JSON.stringify(res.request, null, 2));
         console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
@@ -26,7 +17,7 @@ function getDeveloperAppKeys(data, cb) {
     });
 }
 
-async.series([common.login, getDeveloperAppKeys, common.logout], function (err, res) {
+async.series([common.login, getDeveloperAppKeys, common.logout], function(err, res) {
     console.log("Done, err =", err);
-    process.exit(0);
+    common.exit(0);
 });
