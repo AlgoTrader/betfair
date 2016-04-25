@@ -7,7 +7,7 @@ let _ = require('underscore');
 // session to use for all the invocations, should be set by test
 let settings = {};
 
-function initialize() {
+function initialize(options) {
     // environment
     settings.appKey = process.env['BF_APP_KEY'] || "key";
     settings.login = process.env['BF_LOGIN'] || "nobody";
@@ -22,7 +22,11 @@ function initialize() {
     }
 
     // create session
-    settings.session = new betfair.BetfairSession(settings.appKey);
+    if(options.emulator) {
+        options.emulatorLogFile = 'log_emulator.txt';
+        options.emulatorLogLevel = 'debug';
+    }
+    settings.session = new betfair.BetfairSession(settings.appKey, options);
 
     let logger = new betfair.Logger('calls', 'INFO');
     logger.addFileLog('log_invocations.txt');

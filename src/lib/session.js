@@ -4,6 +4,9 @@
 let _ = require('underscore');
 let auth = require('./auth.js');
 let BetfairInvocation = require('./invocation.js');
+let Logger = require('./logger.js');
+//let Emulator = require('betfair-emulator');
+let Emulator = require('/opt/projects/betfair-emulator');
 
 // ************************************************************************
 // * Betting API - https://api.betfair.com:443/exchange/betting/json-rpc/v1/
@@ -61,7 +64,7 @@ const API_SCORES_METHODS = [
 
 class BetfairSession {
     // Constructor
-    constructor(applicationKey) {
+    constructor(applicationKey, options={}) {
         this.sessionKey = null;
         this.applicationKey = applicationKey;
         BetfairInvocation.setApplicationKey(applicationKey);
@@ -70,6 +73,17 @@ class BetfairSession {
         this.createApiMethods('accounts', API_ACCOUNT_METHODS);
         this.createApiMethods('heartbeat', API_HEARTBEAT_METHODS);
         this.createApiMethods('scores', API_SCORES_METHODS);
+
+        // optionaly init emulator
+        if(options.emulator) {
+            let level = options.emulatorLogLevel || 'info';
+            let logger = new Logger('emu', level);
+            if(options.emulatorLogFile) {
+                logger.addFileLog(options.emulatorLogFile)
+            }
+            this.emulator = new Emulator(logger);
+            BetfairInvocation.setEmulator(this.emulator);
+        }
     }
 
     startInvocationLog(logger) {

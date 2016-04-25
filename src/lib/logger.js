@@ -42,6 +42,9 @@ class Logger {
                     v: '0'
                 };
                 if (data) {
+                    if(_.isArray(data)) {
+                        data = {data: data};
+                    }
                     _.extend(logItem, data);
                 }
                 this.logs.forEach((log) => {log.write(logItem)});

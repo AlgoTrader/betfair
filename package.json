@@ -32,7 +32,7 @@
     "betfair-emulator": "*",
     "node-uuid": "*",
     "querystring": "*",
-    "underscore": "*"
+    "underscore": "^1.8.3"
   },
   "optional": false,
   "devDependencies": {

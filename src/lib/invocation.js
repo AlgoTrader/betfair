@@ -43,6 +43,10 @@ class BetfairInvocation {
         BetfairInvocation.logger = null;
     }
 
+    static setEmulator(emulator) {
+        BetfairInvocation.emulator = emulator;
+    }
+
     constructor(api, sessionKey, method, params = {}, isEmulated = false) {
         if (api !== "accounts" && api !== "betting" && api != "heartbeat" && api != "scores") {
             throw new Error('Bad api parameter:' + api);
@@ -67,7 +71,6 @@ class BetfairInvocation {
             "params": this.params
         };
         this.response = null;
-        //console.log(this);
     }
 
     execute(cb = () => {}) {
@@ -90,13 +93,11 @@ class BetfairInvocation {
                 callback(err);
                 return;
             }
-            callback(null, {
-                request: this.request,
-                response: result.responseBody,
-                result: result.responseBody && result.responseBody.result,
-                error: result.responseBody && result.responseBody.error,
-                duration: result.duration
-            });
+            // feed prices to emulator
+            if(this.method=='listMarketBook' && BetfairInvocation.emulator) {
+                let res = result.responseBody && result.responseBody.result;
+                BetfairInvocation.emulator.feedListMarketBook(res);
+            }
             // log invocation
             if (BetfairInvocation.logger) {
                 BetfairInvocation.logger.info(this.method, {
@@ -107,6 +108,13 @@ class BetfairInvocation {
                     httpStatusCode: result.statusCode
                 });
             }
+            callback(null, {
+                request: this.request,
+                response: result.responseBody,
+                result: result.responseBody && result.responseBody.result,
+                error: result.responseBody && result.responseBody.error,
+                duration: result.duration
+            });
         });
     }
 }
