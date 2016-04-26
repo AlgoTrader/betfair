@@ -7,7 +7,7 @@ let _ = require('lodash');
 // session to use for all the invocations, should be set by test
 let settings = {};
 
-function initialize(options) {
+function initialize(options={}) {
     // environment
     settings.appKey = process.env['BF_APP_KEY'] || "key";
     settings.login = process.env['BF_LOGIN'] || "nobody";

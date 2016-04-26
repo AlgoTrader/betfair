@@ -29,6 +29,8 @@ const BETFAIR_API_ENDPOINTS = {
     }
 };
 
+const ORDER_METHODS = ['placeOrders', 'replaceOrders', 'updateOrders', 'cancelOrders'];
+
 // Betfair Exchange JSON-RPC API invocation (excluding Auth stuff)
 class BetfairInvocation {
     static setApplicationKey(appKey) {
@@ -73,7 +75,41 @@ class BetfairInvocation {
         this.response = null;
     }
 
+    _executeEmulatedCall(cb) {
+        let result = {};
+        let emulator = BetfairInvocation.emulator;
+        switch (this.method) {
+            case 'placeOrders':
+                console.log('$',this.request.params);
+                result = emulator.placeOrders(this.request.params);
+                break;
+            case 'replaceOrders':
+                result = 1;
+                break;
+            case 'updateOrders':
+                result = 1;
+                break;
+            case 'cancelOrders':
+                result = 1;
+                break;
+        }
+        // TODO make logging
+        cb(null, {
+            request: this.request,
+            response: {result: result}, // TODO place response
+            result: result,
+            error: null,
+            duration: 0
+        });
+    }
+
     execute(cb = () => {}) {
+        // if emulator is enabled, redirect orders methods there
+        if (BetfairInvocation.emulator && _.indexOf(ORDER_METHODS, this.method) >= 0) {
+            this._executeEmulatedCall(cb);
+            return;
+        }
+
         let callback = _.once(cb);
         this.jsonRequestBody = JSON.stringify(this.request);
         var httpOptions = {
@@ -87,14 +123,14 @@ class BetfairInvocation {
         if (this.applicationKey) {
             httpOptions.headers['X-Application'] = this.applicationKey;
         }
-        //console.log('invocation start', this.service, this.jsonRequestBody);
+
         HttpRequest.post(this.service, this.jsonRequestBody, httpOptions, (err, result) => {
             if (err) {
                 callback(err);
                 return;
             }
             // provide prices to emulator, updates bets status
-            if(this.method=='listMarketBook' && BetfairInvocation.emulator) {
+            if (BetfairInvocation.emulator && this.method == 'listMarketBook') {
                 let res = result.responseBody && result.responseBody.result;
                 BetfairInvocation.emulator.onListMarketBook(res);
             }
