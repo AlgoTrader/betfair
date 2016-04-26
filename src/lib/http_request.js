@@ -6,7 +6,7 @@ const https = require('https');
 const url = require('url');
 const zlib = require('zlib');
 const Stream = require('stream');
-const _ = require('underscore');
+const _ = require('lodash');
 
 const cookieJar = require('./cookie_jar.js');
 

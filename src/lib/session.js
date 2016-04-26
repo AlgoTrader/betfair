@@ -1,7 +1,7 @@
 // (C) 2016 Anton Zemlyanov, rewritten in JavaScript 6 (ES6)
 'use strict';
 
-let _ = require('underscore');
+let _ = require('lodash');
 let auth = require('./auth.js');
 let BetfairInvocation = require('./invocation.js');
 let Logger = require('./logger.js');
@@ -98,6 +98,27 @@ class BetfairSession {
 
     setSslOptions() {
         // TODO, bot login is not supported yet
+    }
+
+    enableEmulationForMarket(marketId) {
+        if(!this.emulator) {
+            throw new Error('Emulator is not enabled');
+        }
+        this.emulator.enableEmulationForMarket(marketId);
+    }
+
+    disableEmulationForMarket(marketId) {
+        if(!this.emulator) {
+            throw new Error('Emulator is not enabled');
+        }
+        this.emulator.disableEmulationForMarket(marketId);
+    }
+
+    isEmulatedMarket(marketId) {
+        if(!this.emulator) {
+            throw new Error('Emulator is not enabled');
+        }
+        return this.emulator.isEmulatedMarket(marketId);
     }
 
     login(login, password, cb = ()=> {}) {

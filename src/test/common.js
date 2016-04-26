@@ -2,7 +2,7 @@
 let util = require('util');
 let fs = require('fs');
 let betfair = require('../index.js');
-let _ = require('underscore');
+let _ = require('lodash');
 
 // session to use for all the invocations, should be set by test
 let settings = {};
@@ -12,6 +12,7 @@ function initialize(options) {
     settings.appKey = process.env['BF_APP_KEY'] || "key";
     settings.login = process.env['BF_LOGIN'] || "nobody";
     settings.password = process.env['BF_PASSWORD'] || "password";
+    settings.options = options;
 
     // SSL key/certificate
     let key = fs.existsSync("client-2048.key") && fs.readFileSync("client-2048.key");
@@ -22,7 +23,7 @@ function initialize(options) {
     }
 
     // create session
-    if(options.emulator) {
+    if (options.emulator) {
         options.emulatorLogFile = 'log_emulator.txt';
         options.emulatorLogLevel = 'debug';
     }
@@ -123,9 +124,15 @@ function selectMarket(cb) {
     if (settings.markets.length < 1) {
         throw new Error('No markets to test');
     }
+
     settings.selectedMarket = settings.markets[settings.markets.length - 1];
     console.log('Selected Market marketId="%s", name="%s"',
         settings.selectedMarket.marketId, settings.selectedMarket.event.name);
+
+    if (settings.options.emulator) {
+        console.log('Enable emulator for marketId="%s"', settings.selectedMarket.marketId);
+        settings.session.enableEmulationForMarket(settings.selectedMarket.marketId);
+    }
     cb(null);
 }
 

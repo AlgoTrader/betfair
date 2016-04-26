@@ -1,7 +1,7 @@
 // (C) 2016 Anton Zemlyanov, rewritten in JavaScript 6 (ES6)
 'use strict';
 
-const _ = require('underscore');
+const _ = require('lodash');
 const HttpRequest = require('./http_request.js');
 
 // BETFAIR API enpoints
@@ -93,10 +93,10 @@ class BetfairInvocation {
                 callback(err);
                 return;
             }
-            // feed prices to emulator
+            // provide prices to emulator, updates bets status
             if(this.method=='listMarketBook' && BetfairInvocation.emulator) {
                 let res = result.responseBody && result.responseBody.result;
-                BetfairInvocation.emulator.feedListMarketBook(res);
+                BetfairInvocation.emulator.onListMarketBook(res);
             }
             // log invocation
             if (BetfairInvocation.logger) {

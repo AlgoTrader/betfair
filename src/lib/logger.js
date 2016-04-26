@@ -8,7 +8,7 @@
 
 let os = require('os');
 let fs = require('fs');
-let _ = require('underscore');
+let _ = require('lodash');
 
 const LOG_LEVELS = {
     TRACE: 10,

@@ -1,7 +1,7 @@
 var async = require('async');
 var betfair = require("../../index.js");
 var common = require('../common.js');
-var _ = require('underscore');
+var _ = require('lodash');
 
 // Create session to Betfair and start log
 var session = common.initialize();

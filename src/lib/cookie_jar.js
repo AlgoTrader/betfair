@@ -1,7 +1,7 @@
 // (C) 2016 Anton Zemlyanov, rewritten in JavaScript 6 (ES6)
 'use strict';
 
-let _ = require('underscore');
+let _ = require('lodash');
 
 class CookieJar {
     constructor() {
