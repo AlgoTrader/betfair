@@ -7,6 +7,21 @@ var _ = require('lodash');
 var session = common.initialize();
 var settings = common.settings;
 
+function listMarketBook(cb) {
+    console.log('===== Invoke listMarketBook... =====');
+    var req = {
+        marketIds: [common.settings.selectedMarket.marketId],
+        matchProjection: 'NO_ROLLUP',
+        priceProjection: {priceData: ['EX_ALL_OFFERS', 'EX_TRADED']}
+    };
+    session.listMarketBook(req, function(err, res) {
+        console.log("listMarketBook err=%s duration=%s", err, res.duration / 1000);
+        console.log("Request:%s\n", JSON.stringify(res.request, null, 2))
+        console.log("Response:%s\n", JSON.stringify(res.response, null, 2));
+        cb(err);
+    });
+}
+
 function placeOrders(cb) {
     console.log('===== Invoke placeOrders... =====');
     var market = settings.selectedMarket;
@@ -160,7 +175,7 @@ function cancelOrdersFull(cb) {
 }
 
 var actions = [common.login, common.listMarketCatalogue, common.selectMarket,
-    placeOrders, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
+    placeOrders, listMarketBook, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
 
 async.series(actions, function(err, res) {
     console.log("Done, err =", err);
