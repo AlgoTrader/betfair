@@ -175,7 +175,7 @@ function cancelOrdersFull(cb) {
 }
 
 var actions = [common.login, common.listMarketCatalogue, common.selectMarket,
-    placeOrders, listMarketBook, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
+    listMarketBook, placeOrders, listMarketBook, replaceOrders, updateOrders, cancelOrdersPartial, cancelOrdersFull, common.logout];
 
 async.series(actions, function(err, res) {
     console.log("Done, err =", err);

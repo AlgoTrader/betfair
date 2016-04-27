@@ -7,6 +7,14 @@ let _ = require('lodash');
 // session to use for all the invocations, should be set by test
 let settings = {};
 
+_.delay(()=>{}, 1000*1000);
+//process.on('uncaughtException', (err) => {
+//    console.log(`Caught exception: ${err}`);
+//});
+process.on('beforeExit', (err) => {
+    console.log(`Bye`);
+});
+
 function initialize(options={}) {
     // environment
     settings.appKey = process.env['BF_APP_KEY'] || "key";

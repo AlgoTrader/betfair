@@ -75,32 +75,39 @@ class BetfairInvocation {
         this.response = null;
     }
 
-    _executeEmulatedCall(cb) {
+    _executeEmulatedCall(cb = ()=> {}) {
         let result = {};
         let emulator = BetfairInvocation.emulator;
+
+        let sendResult = (call, result, cb = ()=> {}) => {
+            // log call
+            // report result
+            cb(null, {
+                request: this.request,
+                response: {result: result}, // TODO place response
+                result: result,
+                error: null,
+                duration: 0
+            });
+        };
+
         switch (this.method) {
             case 'placeOrders':
-                console.log('$',this.request.params);
-                result = emulator.placeOrders(this.request.params);
+                //console.log('$', this.request.params);
+                emulator.placeOrders(this.request.params, (err, result) => {
+                    sendResult('placeOrders', result, cb);
+                });
                 break;
             case 'replaceOrders':
-                result = 1;
+                sendResult('replaceOrders', {error: 'not supported'}, cb);
                 break;
             case 'updateOrders':
-                result = 1;
+                sendResult('updateOrders', {error: 'not supported'}, cb);
                 break;
             case 'cancelOrders':
-                result = 1;
+                sendResult('cancelOrders', {error: 'not supported'}, cb);
                 break;
         }
-        // TODO make logging
-        cb(null, {
-            request: this.request,
-            response: {result: result}, // TODO place response
-            result: result,
-            error: null,
-            duration: 0
-        });
     }
 
     execute(cb = () => {}) {
