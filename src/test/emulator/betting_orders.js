@@ -13,7 +13,7 @@ function listMarketBook(cb) {
         marketIds: [common.settings.selectedMarket.marketId],
         matchProjection: 'NO_ROLLUP',
         priceProjection: {
-            priceData: ['EX_ALL_OFFERS', 'EX_TRADED']
+            priceData: ['EX_BEST_OFFERS', 'EX_TRADED']
         },
         orderProjection: 'ALL'
     };
@@ -44,7 +44,7 @@ function placeOrders(cb) {
             selectionId: market.runners[0].selectionId,
             side: 'BACK',
             limitOrder: {
-                price: 1000,
+                price: 3.0,
                 size: 5.00,
                 persistenceType: 'LAPSE'
             }
