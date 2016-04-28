@@ -139,7 +139,7 @@ class BetfairInvocation {
             // provide prices to emulator, updates bets status
             if (BetfairInvocation.emulator && this.method == 'listMarketBook') {
                 let res = result.responseBody && result.responseBody.result;
-                BetfairInvocation.emulator.onListMarketBook(res);
+                BetfairInvocation.emulator.onListMarketBook(this.params, res);
             }
             // log invocation
             if (BetfairInvocation.logger) {

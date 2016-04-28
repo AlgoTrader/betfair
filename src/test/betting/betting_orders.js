@@ -12,7 +12,10 @@ function listMarketBook(cb) {
     var req = {
         marketIds: [common.settings.selectedMarket.marketId],
         matchProjection: 'NO_ROLLUP',
-        priceProjection: {priceData: ['EX_ALL_OFFERS', 'EX_TRADED']}
+        priceProjection: {
+            priceData: ['EX_ALL_OFFERS', 'EX_TRADED']
+        },
+        orderProjection: 'ALL'
     };
     session.listMarketBook(req, function(err, res) {
         console.log("listMarketBook err=%s duration=%s", err, res.duration / 1000);
