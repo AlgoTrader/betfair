@@ -53,11 +53,15 @@ class Logger {
     }
 
     addFileLog(filename) {
-        this.logs.push(new FileLog(filename));
+        let log = new FileLog(filename);
+        this.logs.push(log);
+        return log;
     }
 
     addMemoryLog(limit) {
-        this.logs.push(new MemoryLog(limit));
+        let log = new MemoryLog(limit);
+        this.logs.push(log);
+        return log;
     }
 
     close() {
@@ -99,6 +103,10 @@ class MemoryLog {
     }
 
     flush() {
+    }
+
+    getRecords() {
+        return this.log;
     }
 }
 
