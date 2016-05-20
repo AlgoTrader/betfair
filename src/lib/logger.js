@@ -98,7 +98,7 @@ class MemoryLog {
     write(data) {
         this.log.push(data);
         while (this.log.length > this.limit) {
-            this.log.unshift();
+            this.log.shift();
         }
     }
 
