@@ -13,6 +13,7 @@ const cookieJar = require('./cookie_jar.js');
 // always used with BF API
 const USE_GZIP_COMPRESSION = true;
 const NANOSECONDS_IN_SECOND = 1000000000;
+const MAX_REQUEST_TIMEOUT = 15*1000;
 
 const agentParams = {keepAlive: true, maxFreeSockets: 8};
 const httpAgent = new http.Agent(agentParams);
@@ -75,7 +76,7 @@ class HttpRequest extends Stream {
         httpOptions.headers.cookie = cookieJar.serialize();
 
         let request = transport.request(httpOptions, (result) => {
-            //console.log("statusCode: ", result.statusCode, "headers: ", result.headers);
+            console.log("statusCode: ", result.statusCode, "headers: ", result.headers);
             this.statusCode = result.statusCode;
             this.contentType = result.headers['content-type'];
             this.cookies = result.headers['set-cookie'];
@@ -101,6 +102,12 @@ class HttpRequest extends Stream {
         });
         request.on('error', (err) => {
             this.callback(err);
+        });
+        request.on('socket', function (socket) {
+            socket.setTimeout(MAX_REQUEST_TIMEOUT);
+            socket.on('timeout', function() {
+                request.abort();
+            });
         });
         if (this.method === 'post') {
             request.write(this.options.requestBody);
