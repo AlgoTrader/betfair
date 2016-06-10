@@ -112,9 +112,14 @@ class BetfairInvocation {
 
     execute(cb = () => {}) {
         // if emulator is enabled, redirect orders methods there
-        if (BetfairInvocation.emulator && _.indexOf(ORDER_METHODS, this.method) >= 0) {
-            this._executeEmulatedCall(cb);
-            return;
+        let emulator = BetfairInvocation.emulator;
+        if (emulator && _.indexOf(ORDER_METHODS, this.method) >= 0) {
+            let marketId = this.params.marketId;
+            let isEmulatedMarket = emulator.isEmulatedMarket(marketId);
+            if (isEmulatedMarket) {
+                this._executeEmulatedCall(cb);
+                return;
+            }
         }
 
         let callback = _.once(cb);
