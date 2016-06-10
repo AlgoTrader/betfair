@@ -79,14 +79,24 @@ class BetfairInvocation {
         let result = {};
         let emulator = BetfairInvocation.emulator;
 
-        let sendResult = (call, result, cb = ()=> {}) => {
+        let sendResult = (method, error, result, cb = ()=> {}) => {
             // log call
+            if (BetfairInvocation.logger) {
+                BetfairInvocation.logger.info(method, {
+                    api: this.api,
+                    duration: result.duration,
+                    isSuccess: !(result.responseBody && result.responseBody.error),
+                    length: 'n/a',
+                    httpStatusCode: 'n/a'
+                });
+            }
+
             // report result
             cb(null, {
                 request: this.request,
-                response: {result: result}, // TODO place response
+                response: {error: error, result: result}, // TODO place response
                 result: result,
-                error: null,
+                error: error,
                 duration: 0
             });
         };
@@ -95,7 +105,7 @@ class BetfairInvocation {
             case 'placeOrders':
                 //console.log('$', this.request.params);
                 emulator.placeOrders(this.request.params, (err, result) => {
-                    sendResult('placeOrders', result, cb);
+                    sendResult('placeOrders', err, result, cb);
                 });
                 break;
             case 'replaceOrders':
@@ -105,7 +115,9 @@ class BetfairInvocation {
                 sendResult('updateOrders', {error: 'not supported'}, cb);
                 break;
             case 'cancelOrders':
-                sendResult('cancelOrders', {error: 'not supported'}, cb);
+                emulator.cancelOrders(this.request.params, (err, result) => {
+                    sendResult('cancelOrders', err, result, cb);
+                });
                 break;
         }
     }
@@ -142,9 +154,9 @@ class BetfairInvocation {
                 return;
             }
             // provide prices to emulator, updates bets status
-            if (BetfairInvocation.emulator && this.method == 'listMarketBook') {
+            if (emulator && this.method == 'listMarketBook') {
                 let res = result.responseBody && result.responseBody.result;
-                BetfairInvocation.emulator.onListMarketBook(this.params, res);
+                emulator.onListMarketBook(this.params, res);
             }
             // log invocation
             if (BetfairInvocation.logger) {
