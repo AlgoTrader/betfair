@@ -5,8 +5,8 @@ let _ = require('lodash');
 let auth = require('./auth.js');
 let BetfairInvocation = require('./invocation.js');
 let Logger = require('./logger.js');
-let Emulator = require('betfair-emulator');
-//let Emulator = require('/opt/projects/betfair-emulator');
+//let Emulator = require('betfair-emulator');
+let Emulator = require('/opt/projects/betfair-emulator');
 
 // ************************************************************************
 // * Betting API - https://api.betfair.com:443/exchange/betting/json-rpc/v1/
