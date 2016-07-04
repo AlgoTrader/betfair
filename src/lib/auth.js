@@ -93,6 +93,10 @@ class BetfairAuth {
             }
         };
         HttpRequest.post(AUTH_URLS.logout, formData, options, (err, res) => {
+            if(err) {
+                cb(err);
+                return;
+            }
             if (res.responseBody.status != 'SUCCESS') {
                 cb(res.responseBody.error);
                 return;
@@ -123,6 +127,10 @@ class BetfairAuth {
             }
         };
         HttpRequest.post(AUTH_URLS.keepAlive, formData, options, (err, res) => {
+            if(err) {
+                cb(err);
+                return;
+            }
             if (res.responseBody.status != 'SUCCESS') {
                 cb(res.responseBody.error);
                 return;
