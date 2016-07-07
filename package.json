@@ -1,6 +1,6 @@
 {
   "name": "betfair",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Betfair JSON API",
   "main": "index.js",
   "private": false,
