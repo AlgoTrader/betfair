@@ -136,13 +136,13 @@ class BetfairPrice {
         if (other.price < this.price) {
             // negative spread
             while (other.price < (this.price - epsilon)) {
-                other.increasePrice();
+                other.increase();
                 --spread;
             }
         } else {
             // positive spread
             while (other.price > (this.price + epsilon)) {
-                other.decreasePrice();
+                other.decrease();
                 ++spread;
             }
         }
