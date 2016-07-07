@@ -20,9 +20,9 @@ const LOG_LEVELS = {
 };
 
 class Logger {
-    constructor(name, level = 'INFO') {
+    constructor(name, logLevel = 'INFO') {
         this.name = name;
-        this.currentLogLevel = LOG_LEVELS[level.toUpperCase()];
+        this.currentLogLevel = LOG_LEVELS[logLevel.toUpperCase()];
         this.logs = [];
 
         ['trace', 'debug', 'info', 'warn', 'error', 'fatal'].forEach((level) => {
