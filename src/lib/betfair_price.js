@@ -130,18 +130,18 @@ class BetfairPrice {
 
     spreadToPrice(otherPrice) {
         var other = new BetfairPrice(otherPrice);
-        if (Math.abs(this.size - other.size) < epsilon)
+        if (Math.abs(this.price - other.price) < epsilon)
             return 0;
         var spread = 0;
-        if (other.size < this.size) {
+        if (other.price < this.price) {
             // negative spread
-            while (other.size < (this.size - epsilon)) {
+            while (other.price < (this.price - epsilon)) {
                 other.increasePrice();
                 --spread;
             }
         } else {
             // positive spread
-            while (other.size > (this.size + epsilon)) {
+            while (other.price > (this.price + epsilon)) {
                 other.decreasePrice();
                 ++spread;
             }
