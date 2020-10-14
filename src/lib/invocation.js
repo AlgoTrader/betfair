@@ -5,7 +5,7 @@ const _ = require('lodash');
 const HttpRequest = require('./http_request.js');
 
 // BETFAIR API enpoints
-const BETFAIR_API_HOST = 'https://84.20.200.10:443';
+const BETFAIR_API_HOST = 'https://api.betfair.com:443';
 const BETFAIR_API_ENDPOINTS = {
     accounts: {
         type: "AccountAPING",
